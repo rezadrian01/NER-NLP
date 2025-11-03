@@ -193,26 +193,39 @@ def generate_entity_visualization(entity_name):
 @app.route('/entity/<entity_name>/graph')
 def entity_visualization(entity_name):
     """Serve the entity-specific visualization."""
-    safe_name = entity_name.replace(' ', '_').lower()
-    html_path = Path(OUTPUT_DIR) / f"entity_{safe_name}.html"
-    
-    if html_path.exists():
-        return send_file(str(html_path))
-    else:
-        # Generate if not exists
-        try:
-            p = init_pipeline()
-            from visualization import GraphVisualizer
-            
-            visualizer = GraphVisualizer()
-            visualizer.visualize_entity_direct_relations(
-                p.knowledge_graph,
-                entity_name,
-                output_path=str(html_path)
-            )
+    try:
+        p = init_pipeline()
+        
+        # Check if knowledge graph is loaded
+        if p.knowledge_graph.graph.number_of_nodes() == 0:
+            return f"<h1>Error</h1><p>Knowledge graph is empty. Please run the pipeline first: <code>python pipeline.py</code></p>", 404
+        
+        # Check if entity exists
+        if not p.knowledge_graph.graph.has_node(entity_name):
+            return f"<h1>Entity Not Found</h1><p>Entity '{entity_name}' does not exist in the knowledge graph.</p><p><a href='/'>Back to Home</a></p>", 404
+        
+        # Check if visualization already exists
+        safe_name = entity_name.replace(' ', '_').lower()
+        html_path = Path(OUTPUT_DIR) / f"entity_{safe_name}.html"
+        
+        if html_path.exists():
             return send_file(str(html_path))
-        except:
-            return "Entity not found or visualization failed.", 404
+        
+        # Generate visualization
+        from visualization import GraphVisualizer
+        
+        visualizer = GraphVisualizer()
+        visualizer.visualize_entity_direct_relations(
+            p.knowledge_graph,
+            entity_name,
+            output_path=str(html_path)
+        )
+        
+        return send_file(str(html_path))
+        
+    except Exception as e:
+        logger.error(f"Error in entity_visualization: {e}", exc_info=True)
+        return f"<h1>Error</h1><p>Failed to generate visualization: {str(e)}</p><p><a href='/'>Back to Home</a></p>", 500
 
 
 def create_templates():
@@ -400,7 +413,8 @@ def create_templates():
         });
         
         function viewEntity(entityName) {
-            window.location.href = `/entity/${encodeURIComponent(entityName)}`;
+            // Redirect to 1-level graph visualization directly
+            window.location.href = `/entity/${encodeURIComponent(entityName)}/graph`;
         }
     </script>
 </body>
