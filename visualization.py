@@ -274,6 +274,112 @@ class GraphVisualizer:
         
         return output_path
     
+    def visualize_entity_direct_relations(self, kg, entity_name: str,
+                                          output_path: str = None) -> str:
+        """
+        Visualize ONLY direct relationships of an entity (1-level, ego network).
+        Shows the entity and its immediate neighbors, but NO edges between neighbors.
+        
+        Args:
+            kg: KnowledgeGraph object
+            entity_name: Central entity
+            output_path: Path to save HTML file
+            
+        Returns:
+            Path to generated HTML file
+        """
+        if not kg.graph.has_node(entity_name):
+            logger.error(f"Entity '{entity_name}' not found in graph")
+            return None
+        
+        logger.info(f"Creating 1-level visualization for '{entity_name}'...")
+        
+        # Create network
+        net = self.create_network()
+        
+        # Get central entity data
+        central_data = kg.graph.nodes[entity_name]
+        central_type = central_data.get('type', 'UNKNOWN')
+        central_count = central_data.get('count', 1)
+        
+        # Add central node (larger size)
+        net.add_node(entity_name,
+                    label=entity_name,
+                    title=f"{entity_name}\nType: {central_type}\nMentions: {central_count}\n(Central Entity)",
+                    color=self.entity_colors.get(central_type, '#95a5a6'),
+                    size=40,  # Larger for central node
+                    font={'size': 14, 'bold': True})
+        
+        # Get all direct neighbors (incoming and outgoing)
+        neighbors = set()
+        neighbors.update(kg.graph.successors(entity_name))  # Outgoing
+        neighbors.update(kg.graph.predecessors(entity_name))  # Incoming
+        
+        # Add neighbor nodes
+        for neighbor in neighbors:
+            neighbor_data = kg.graph.nodes[neighbor]
+            neighbor_type = neighbor_data.get('type', 'UNKNOWN')
+            neighbor_count = neighbor_data.get('count', 1)
+            
+            net.add_node(neighbor,
+                        label=neighbor,
+                        title=f"{neighbor}\nType: {neighbor_type}\nMentions: {neighbor_count}",
+                        color=self.entity_colors.get(neighbor_type, '#95a5a6'),
+                        size=20,
+                        font={'size': 12})
+        
+        # Add ONLY edges connected to central entity
+        # Outgoing edges (central → neighbor)
+        for neighbor in kg.graph.successors(entity_name):
+            edge_data = kg.graph[entity_name][neighbor]
+            relations = edge_data.get('relations', [])
+            relation_count = edge_data.get('count', 1)
+            
+            label = ', '.join(relations)
+            color = self.relation_colors.get(relations[0], '#9e9e9e') if relations else '#9e9e9e'
+            width = min(1 + relation_count * 0.5, 5)
+            title = f"{entity_name} → {neighbor}\n{label}"
+            
+            net.add_edge(entity_name, neighbor,
+                        title=title,
+                        label=label[:20],
+                        color=color,
+                        width=width,
+                        arrows='to',
+                        font={'size': 10, 'align': 'middle'})
+        
+        # Incoming edges (neighbor → central)
+        for neighbor in kg.graph.predecessors(entity_name):
+            edge_data = kg.graph[neighbor][entity_name]
+            relations = edge_data.get('relations', [])
+            relation_count = edge_data.get('count', 1)
+            
+            label = ', '.join(relations)
+            color = self.relation_colors.get(relations[0], '#9e9e9e') if relations else '#9e9e9e'
+            width = min(1 + relation_count * 0.5, 5)
+            title = f"{neighbor} → {entity_name}\n{label}"
+            
+            net.add_edge(neighbor, entity_name,
+                        title=title,
+                        label=label[:20],
+                        color=color,
+                        width=width,
+                        arrows='to',
+                        font={'size': 10, 'align': 'middle'})
+        
+        # Generate output path
+        if not output_path:
+            safe_name = entity_name.replace(' ', '_').lower()
+            output_path = f"entity_{safe_name}.html"
+        
+        # Save
+        net.save_graph(output_path)
+        logger.info(f"1-level visualization saved to {output_path}")
+        logger.info(f"Showing 1 central entity + {len(neighbors)} direct neighbors")
+        logger.info(f"Total edges: {len(list(kg.graph.successors(entity_name))) + len(list(kg.graph.predecessors(entity_name)))}")
+        
+        return output_path
+    
     def create_subgraph_visualization(self, kg, entity_name: str,
                                      depth: int = 1,
                                      output_path: str = None) -> str:
@@ -289,7 +395,11 @@ class GraphVisualizer:
         Returns:
             Path to generated HTML file
         """
-        # Get subgraph
+        # For depth=1, use the optimized direct relations method
+        if depth == 1:
+            return self.visualize_entity_direct_relations(kg, entity_name, output_path)
+        
+        # Get subgraph for depth > 1
         subgraph = kg.get_subgraph(entity_name, depth=depth)
         
         if not subgraph:
