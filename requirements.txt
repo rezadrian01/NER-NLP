@@ -1,0 +1,22 @@
+# Core dependencies
+pandas>=2.0.0
+numpy>=1.24.0
+
+# NLP libraries
+spacy>=3.7.0
+transformers>=4.35.0
+torch>=2.1.0
+
+# Graph libraries
+networkx>=3.2.0
+pyvis>=0.3.2
+
+# Web framework
+flask>=3.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+tqdm>=4.66.0
+
+# Indonesian NLP model (install separately with: python -m spacy download xx_ent_wiki_sm)
+# For better Indonesian support, we'll use multilingual models
