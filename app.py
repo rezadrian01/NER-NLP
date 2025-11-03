@@ -152,6 +152,69 @@ def entity_detail(entity_name):
     return render_template('entity.html', entity_name=entity_name)
 
 
+@app.route('/api/entity/<entity_name>/visualization')
+def generate_entity_visualization(entity_name):
+    """Generate 1-level visualization for a specific entity."""
+    try:
+        p = init_pipeline()
+        
+        if not p.knowledge_graph.graph.has_node(entity_name):
+            return jsonify({
+                'error': f'Entity "{entity_name}" not found'
+            }), 404
+        
+        # Generate visualization using the new method
+        from visualization import GraphVisualizer
+        
+        visualizer = GraphVisualizer()
+        output_dir = Path(OUTPUT_DIR)
+        output_dir.mkdir(exist_ok=True)
+        
+        safe_name = entity_name.replace(' ', '_').lower()
+        html_path = output_dir / f"entity_{safe_name}.html"
+        
+        visualizer.visualize_entity_direct_relations(
+            p.knowledge_graph,
+            entity_name,
+            output_path=str(html_path)
+        )
+        
+        return jsonify({
+            'success': True,
+            'path': str(html_path),
+            'url': f'/entity/{entity_name}/graph'
+        })
+    
+    except Exception as e:
+        logger.error(f"Error generating visualization: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/entity/<entity_name>/graph')
+def entity_visualization(entity_name):
+    """Serve the entity-specific visualization."""
+    safe_name = entity_name.replace(' ', '_').lower()
+    html_path = Path(OUTPUT_DIR) / f"entity_{safe_name}.html"
+    
+    if html_path.exists():
+        return send_file(str(html_path))
+    else:
+        # Generate if not exists
+        try:
+            p = init_pipeline()
+            from visualization import GraphVisualizer
+            
+            visualizer = GraphVisualizer()
+            visualizer.visualize_entity_direct_relations(
+                p.knowledge_graph,
+                entity_name,
+                output_path=str(html_path)
+            )
+            return send_file(str(html_path))
+        except:
+            return "Entity not found or visualization failed.", 404
+
+
 def create_templates():
     """Create template HTML files."""
     templates_dir = Path(__file__).parent / "templates"
@@ -370,7 +433,7 @@ def create_templates():
             margin-bottom: 20px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         }
-        .back-btn {
+        .back-btn, .viz-btn {
             background: rgba(255, 255, 255, 0.2);
             border: 2px solid white;
             color: white;
@@ -378,6 +441,20 @@ def create_templates():
             border-radius: 20px;
             text-decoration: none;
             display: inline-block;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        .back-btn:hover, .viz-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+        .viz-btn {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4caf50;
+        }
+        .viz-btn:hover {
+            background: #4caf50;
+            color: white;
         }
         .relation-item {
             background: rgba(255, 255, 255, 0.1);
@@ -389,7 +466,10 @@ def create_templates():
 </head>
 <body>
     <div class="container">
-        <a href="/" class="back-btn">← Back to Home</a>
+        <div style="margin-bottom: 20px;">
+            <a href="/" class="back-btn">← Back to Home</a>
+            <a href="/entity/{{ entity_name }}/graph" class="viz-btn" target="_blank">🎨 View Graph (1-Level)</a>
+        </div>
         <h1 id="entity-name">{{ entity_name }}</h1>
         <div id="entity-info"></div>
     </div>
