@@ -75,9 +75,32 @@ class GraphVisualizer:
             'sibling_of': '#9c27b0',
             'fought_with': '#f44336',
             'killed_by': '#b71c1c',
+            'killed': '#b71c1c',
             'ruled_in': '#ff9800',
+            'ruled_by': '#ff9800',
             'died_in': '#607d8b',
+            'located_in': '#00bcd4',
+            'participated_in': '#4caf50',
+            'member_of': '#ff5722',
             'associated_with': '#9e9e9e'
+        }
+        
+        # Human-readable relation labels
+        self.relation_labels = {
+            'child_of': 'child of',
+            'parent_of': 'parent of',
+            'married_to': 'married to',
+            'sibling_of': 'sibling of',
+            'fought_with': 'fought with',
+            'killed_by': 'killed by',
+            'killed': 'killed',
+            'ruled_in': 'ruled in',
+            'ruled_by': 'ruled by',
+            'died_in': 'died in',
+            'located_in': 'located in',
+            'participated_in': 'participated in',
+            'member_of': 'member of',
+            'associated_with': 'related to'
         }
     
     def create_network(self) -> Network:
@@ -123,7 +146,8 @@ class GraphVisualizer:
         return net
     
     def visualize_from_knowledge_graph(self, kg, output_path: str = "graph.html",
-                                      max_nodes: int = None) -> str:
+                                      max_nodes: int = None, max_edges: int = None,
+                                      one_level_per_node: bool = False) -> str:
         """
         Visualize a KnowledgeGraph object.
         
@@ -131,6 +155,8 @@ class GraphVisualizer:
             kg: KnowledgeGraph object
             output_path: Path to save HTML file
             max_nodes: Maximum number of nodes to display (None for all)
+            max_edges: Maximum number of edges to display (None for all)
+            one_level_per_node: If True, shows only 1-level connections per node (lighter)
             
         Returns:
             Path to generated HTML file
@@ -175,38 +201,140 @@ class GraphVisualizer:
                         size=size,
                         font={'size': 12})
         
-        # Add edges
-        for source, target in kg.graph.edges():
-            if source in nodes_to_display and target in nodes_to_display:
-                edge_data = kg.graph[source][target]
-                relations = edge_data.get('relations', [])
-                relation_count = edge_data.get('count', 1)
-                
-                # Edge label
-                label = ', '.join(relations)
-                
-                # Edge color based on relation type
-                color = self.relation_colors.get(relations[0], '#9e9e9e') if relations else '#9e9e9e'
-                
-                # Edge width based on count
-                width = min(1 + relation_count * 0.5, 5)
-                
-                # Create title
-                title = f"{source} → {target}\n{label}"
-                
-                net.add_edge(source, target,
-                           title=title,
-                           label=label[:20],  # Truncate long labels
-                           color=color,
-                           width=width,
-                           arrows='to',
-                           font={'size': 10, 'align': 'middle'})
+        # Add edges with optimization
+        edges_to_add = []
+        
+        if one_level_per_node:
+            # For each node, only show its direct connections (1-level depth)
+            # This creates a "hub" visualization where nodes don't show relations between their neighbors
+            added_edges = set()
+            for node in nodes_to_display:
+                # Get direct connections
+                for target in kg.graph.successors(node):
+                    if target in nodes_to_display:
+                        edge_key = (node, target)
+                        if edge_key not in added_edges:
+                            edges_to_add.append(edge_key)
+                            added_edges.add(edge_key)
+                for source in kg.graph.predecessors(node):
+                    if source in nodes_to_display:
+                        edge_key = (source, node)
+                        if edge_key not in added_edges:
+                            edges_to_add.append(edge_key)
+                            added_edges.add(edge_key)
+        else:
+            # Normal mode: show all edges
+            for source, target in kg.graph.edges():
+                if source in nodes_to_display and target in nodes_to_display:
+                    edges_to_add.append((source, target))
+        
+        # Limit edges if specified
+        if max_edges and len(edges_to_add) > max_edges:
+            # Keep edges with highest count
+            edges_with_count = [(s, t, kg.graph[s][t].get('count', 1)) for s, t in edges_to_add]
+            edges_with_count.sort(key=lambda x: x[2], reverse=True)
+            edges_to_add = [(s, t) for s, t, _ in edges_with_count[:max_edges]]
+            logger.info(f"Displaying top {max_edges} edges by count")
+        
+        # Add edges to visualization
+        for source, target in edges_to_add:
+            edge_data = kg.graph[source][target]
+            relations = edge_data.get('relations', [])
+            relation_count = edge_data.get('count', 1)
+            
+            # Try to get dynamic labels first
+            dynamic_labels = edge_data.get('dynamic_labels', [])
+            
+            # Format relation labels to be more readable
+            readable_relations = []
+            if dynamic_labels:
+                # Use dynamic labels if available
+                readable_relations = [str(label) for label in dynamic_labels if label]
+            
+            # Fallback to static labels if no dynamic labels
+            if not readable_relations:
+                for rel in relations:
+                    readable_label = self.relation_labels.get(rel, rel.replace('_', ' '))
+                    readable_relations.append(readable_label)
+            
+            # Edge label - use readable format
+            if len(readable_relations) == 1:
+                label = readable_relations[0]
+            elif len(readable_relations) == 2:
+                label = f"{readable_relations[0]}, {readable_relations[1]}"
+            else:
+                label = f"{readable_relations[0]}+{len(readable_relations)-1}"
+            
+            # Edge color based on relation type
+            color = self.relation_colors.get(relations[0], '#9e9e9e') if relations else '#9e9e9e'
+            
+            # Edge width based on count
+            width = min(1 + relation_count * 0.5, 5)
+            
+            # Create detailed title with all relations
+            all_relations_text = ', '.join(readable_relations)
+            title = f"{source} → {target}\n{all_relations_text}"
+            if relation_count > 1:
+                title += f" ({relation_count}x)"
+            
+            net.add_edge(source, target,
+                       title=title,
+                       label=label,
+                       color=color,
+                       width=width,
+                       arrows='to',
+                       font={'size': 10, 'align': 'middle'})
         
         # Save
         net.save_graph(output_path)
         logger.info(f"Visualization saved to {output_path}")
+        logger.info(f"Nodes displayed: {len(nodes_to_display)}, Edges displayed: {len(edges_to_add)}")
         
         return output_path
+    
+    def visualize_hub_network(self, kg, output_path: str = "hub_graph.html",
+                             top_entities: int = 20) -> str:
+        """
+        Create a lighter "hub" visualization showing only top entities and their 1-level connections.
+        This is optimized for browser performance with large graphs.
+        
+        Args:
+            kg: KnowledgeGraph object
+            output_path: Path to save HTML file
+            top_entities: Number of top entities to show as hubs
+            
+        Returns:
+            Path to generated HTML file
+        """
+        logger.info(f"Creating hub visualization with top {top_entities} entities...")
+        
+        # Get top entities by degree
+        degrees = dict(kg.graph.degree())
+        sorted_entities = sorted(degrees.items(), key=lambda x: x[1], reverse=True)
+        hub_nodes = [entity for entity, _ in sorted_entities[:top_entities]]
+        
+        # Get all nodes that connect to hub nodes
+        all_nodes = set(hub_nodes)
+        for hub in hub_nodes:
+            all_nodes.update(kg.graph.successors(hub))
+            all_nodes.update(kg.graph.predecessors(hub))
+        
+        # Create subgraph
+        subgraph = kg.graph.subgraph(all_nodes).copy()
+        
+        # Create a temporary KnowledgeGraph object for visualization
+        from graph_builder import KnowledgeGraph
+        temp_kg = KnowledgeGraph()
+        temp_kg.graph = subgraph
+        
+        logger.info(f"Hub network: {len(all_nodes)} nodes from {kg.graph.number_of_nodes()} total")
+        
+        # Use standard visualization with the filtered graph
+        return self.visualize_from_knowledge_graph(
+            temp_kg,
+            output_path=output_path,
+            one_level_per_node=True
+        )
     
     def visualize_from_json(self, json_data: Dict[str, Any], 
                            output_path: str = "graph.html") -> str:
@@ -254,15 +382,19 @@ class GraphVisualizer:
         # Add edges
         for edge in json_data['edges']:
             relations = edge.get('relations', [])
-            label = ', '.join(relations)
+            
+            # Format readable labels
+            readable_relations = [self.relation_labels.get(rel, rel.replace('_', ' ')) for rel in relations]
+            label = ', '.join(readable_relations) if len(readable_relations) <= 2 else f"{readable_relations[0]}+{len(readable_relations)-1}"
+            
             color = self.relation_colors.get(relations[0], '#9e9e9e') if relations else '#9e9e9e'
             width = min(1 + edge.get('count', 1) * 0.5, 5)
             
-            title = f"{edge['source']} → {edge['target']}\n{label}"
+            title = f"{edge['source']} → {edge['target']}\n{', '.join(readable_relations)}"
             
             net.add_edge(edge['source'], edge['target'],
                         title=title,
-                        label=label[:20],
+                        label=label,
                         color=color,
                         width=width,
                         arrows='to',
@@ -335,14 +467,17 @@ class GraphVisualizer:
             relations = edge_data.get('relations', [])
             relation_count = edge_data.get('count', 1)
             
-            label = ', '.join(relations)
+            # Format readable labels
+            readable_relations = [self.relation_labels.get(rel, rel.replace('_', ' ')) for rel in relations]
+            label = ', '.join(readable_relations) if len(readable_relations) <= 2 else f"{readable_relations[0]}+{len(readable_relations)-1}"
+            
             color = self.relation_colors.get(relations[0], '#9e9e9e') if relations else '#9e9e9e'
             width = min(1 + relation_count * 0.5, 5)
-            title = f"{entity_name} → {neighbor}\n{label}"
+            title = f"{entity_name} → {neighbor}\n{', '.join(readable_relations)}"
             
             net.add_edge(entity_name, neighbor,
                         title=title,
-                        label=label[:20],
+                        label=label,
                         color=color,
                         width=width,
                         arrows='to',
@@ -354,14 +489,17 @@ class GraphVisualizer:
             relations = edge_data.get('relations', [])
             relation_count = edge_data.get('count', 1)
             
-            label = ', '.join(relations)
+            # Format readable labels
+            readable_relations = [self.relation_labels.get(rel, rel.replace('_', ' ')) for rel in relations]
+            label = ', '.join(readable_relations) if len(readable_relations) <= 2 else f"{readable_relations[0]}+{len(readable_relations)-1}"
+            
             color = self.relation_colors.get(relations[0], '#9e9e9e') if relations else '#9e9e9e'
             width = min(1 + relation_count * 0.5, 5)
-            title = f"{neighbor} → {entity_name}\n{label}"
+            title = f"{neighbor} → {entity_name}\n{', '.join(readable_relations)}"
             
             net.add_edge(neighbor, entity_name,
                         title=title,
-                        label=label[:20],
+                        label=label,
                         color=color,
                         width=width,
                         arrows='to',

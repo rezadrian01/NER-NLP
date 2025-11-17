@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity: {{ entity_name }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .back-btn, .viz-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        .back-btn:hover, .viz-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+        .viz-btn {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4caf50;
+        }
+        .viz-btn:hover {
+            background: #4caf50;
+            color: white;
+        }
+        .relation-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <a href="/" class="back-btn">← Back to Home</a>
+            <a href="/entity/{{ entity_name }}/graph" class="viz-btn" target="_blank">🎨 View Graph (1-Level)</a>
+        </div>
+        <h1 id="entity-name">{{ entity_name }}</h1>
+        <div id="entity-info"></div>
+    </div>
+    
+    <script>
+        const entityName = "{{ entity_name }}";
+        
+        fetch(`/api/entity/${encodeURIComponent(entityName)}`)
+            .then(response => response.json())
+            .then(data => {
+                const infoDiv = document.getElementById('entity-info');
+                
+                infoDiv.innerHTML = `
+                    <div class="card">
+                        <h2>Information</h2>
+                        <p><strong>Type:</strong> ${data.type}</p>
+                        <p><strong>Mentions:</strong> ${data.mention_count}</p>
+                        <p><strong>Connections:</strong> ${data.degree}</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h2>Outgoing Relations</h2>
+                        ${data.outgoing_relations.map(rel => `
+                            <div class="relation-item">
+                                ${data.name} → <strong>${rel.relations.join(', ')}</strong> → ${rel.target}
+                            </div>
+                        `).join('') || '<p>No outgoing relations</p>'}
+                    </div>
+                    
+                    <div class="card">
+                        <h2>Incoming Relations</h2>
+                        ${data.incoming_relations.map(rel => `
+                            <div class="relation-item">
+                                ${rel.source} → <strong>${rel.relations.join(', ')}</strong> → ${data.name}
+                            </div>
+                        `).join('') || '<p>No incoming relations</p>'}
+                    </div>
+                `;
+            })
+            .catch(error => {
+                console.error('Error loading entity:', error);
+                document.getElementById('entity-info').innerHTML = 
+                    '<div class="card"><p>Error loading entity information</p></div>';
+            });
+    </script>
+</body>
+</html>

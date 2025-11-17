@@ -137,13 +137,66 @@ def search_entities():
 
 @app.route('/visualization')
 def visualization():
-    """Serve the graph visualization page."""
-    html_path = Path(OUTPUT_DIR) / "knowledge_graph.html"
-    
-    if html_path.exists():
-        return send_file(str(html_path))
-    else:
-        return "Visualization not found. Please run the pipeline first.", 404
+    """Show instructions to search for specific entities."""
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Knowledge Graph Visualization</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 40px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .container {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 50px;
+                max-width: 600px;
+                text-align: center;
+                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            }
+            h1 { font-size: 2.5em; margin-bottom: 20px; }
+            p { font-size: 1.2em; line-height: 1.6; opacity: 0.9; }
+            .btn {
+                background: rgba(255, 255, 255, 0.2);
+                border: 2px solid white;
+                color: white;
+                padding: 15px 40px;
+                border-radius: 30px;
+                font-size: 1.1em;
+                text-decoration: none;
+                display: inline-block;
+                margin-top: 30px;
+                transition: all 0.3s;
+            }
+            .btn:hover {
+                background: white;
+                color: #667eea;
+                transform: translateY(-2px);
+            }
+            .icon { font-size: 4em; margin-bottom: 20px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="icon">🔍</div>
+            <h1>Search for an Entity</h1>
+            <p>To view the knowledge graph visualization, please go back to the home page and <strong>search for a specific entity</strong>.</p>
+            <p>Each entity will show its direct relationships (1-level deep) for optimal performance.</p>
+            <a href="/" class="btn">← Back to Search</a>
+        </div>
+    </body>
+    </html>
+    """
 
 
 @app.route('/entity/<entity_name>')
@@ -356,9 +409,10 @@ def create_templates():
         </div>
         
         <div class="card">
-            <h2>Visualization</h2>
-            <p>View the interactive knowledge graph with all entities and their relationships.</p>
-            <a href="/visualization" class="btn" target="_blank">Open Graph Visualization</a>
+            <h2>How to Visualize</h2>
+            <p><strong>🔍 Search for an entity below</strong> to see its knowledge graph with 1-level deep relationships.</p>
+            <p style="opacity: 0.8; font-size: 0.9em;">⚡ Each entity shows only its direct connections for optimal browser performance</p>
+            <p style="opacity: 0.7; font-size: 0.85em; margin-top: 10px;">Example: Search "Abimanyu" → Click result → View graph showing Abimanyu + direct relations only</p>
         </div>
         
         <div class="card">
@@ -402,6 +456,7 @@ def create_templates():
                                     <strong>${entity.name}</strong> 
                                     <span style="opacity: 0.8;">[${entity.type}]</span>
                                     <span style="opacity: 0.7; float: right;">Mentions: ${entity.count}</span>
+                                    <div style="font-size: 0.85em; opacity: 0.6; margin-top: 5px;">🔍 Click to view 1-level graph</div>
                                 </div>
                             `).join('');
                         } else {
@@ -413,8 +468,8 @@ def create_templates():
         });
         
         function viewEntity(entityName) {
-            // Redirect to 1-level graph visualization directly
-            window.location.href = `/entity/${encodeURIComponent(entityName)}/graph`;
+            // Open entity 1-level graph in new tab
+            window.open(`/entity/${encodeURIComponent(entityName)}/graph`, '_blank');
         }
     </script>
 </body>
