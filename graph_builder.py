@@ -70,7 +70,7 @@ class KnowledgeGraph:
             self.entity_metadata[entity_name].append(metadata)
     
     def add_relation(self, subject: str, relation_type: str, obj: str, 
-                    confidence: float = 1.0, context: str = None):
+                    confidence: float = 1.0, context: str = None, dynamic_label: str = None):
         """
         Add a relation edge to the graph.
         
@@ -80,6 +80,7 @@ class KnowledgeGraph:
             obj: Target entity
             confidence: Confidence score (0-1)
             context: Context sentence where relation was found
+            dynamic_label: Dynamic, context-based label for the relation
         """
         # Normalize entity names
         subject = subject.strip()
@@ -101,12 +102,24 @@ class KnowledgeGraph:
                 existing_relations.append(relation_type)
                 self.graph[subject][obj]['relations'] = existing_relations
                 self.graph[subject][obj]['count'] = self.graph[subject][obj].get('count', 0) + 1
+            
+            # Add dynamic label if provided
+            if dynamic_label:
+                dynamic_labels = self.graph[subject][obj].get('dynamic_labels', [])
+                if dynamic_label not in dynamic_labels:
+                    dynamic_labels.append(dynamic_label)
+                    self.graph[subject][obj]['dynamic_labels'] = dynamic_labels
         else:
             # Add new edge
-            self.graph.add_edge(subject, obj,
-                              relations=[relation_type],
-                              count=1,
-                              confidence=confidence)
+            edge_attrs = {
+                'relations': [relation_type],
+                'count': 1,
+                'confidence': confidence
+            }
+            if dynamic_label:
+                edge_attrs['dynamic_labels'] = [dynamic_label]
+            
+            self.graph.add_edge(subject, obj, **edge_attrs)
         
         # Store metadata
         if edge_key not in self.relation_metadata:
@@ -150,7 +163,8 @@ class KnowledgeGraph:
                         relation['relation'],
                         relation['object'],
                         confidence=relation.get('confidence', 1.0),
-                        context=relation.get('context')
+                        context=relation.get('context'),
+                        dynamic_label=relation.get('dynamic_label')
                     )
         
         logger.info(f"Graph built: {self.graph.number_of_nodes()} nodes, "

@@ -11,6 +11,14 @@ import logging
 from typing import List, Dict, Tuple, Any
 import pandas as pd
 
+# Import dynamic relation labeler
+try:
+    from dynamic_relation_labeler import DynamicRelationLabeler
+    DYNAMIC_LABELER_AVAILABLE = True
+except ImportError:
+    DYNAMIC_LABELER_AVAILABLE = False
+    logging.warning("Dynamic relation labeler not available")
+
 # Configure logging
 logging.basicConfig(level=logging.INFO,
                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -23,9 +31,38 @@ class RelationExtractor:
     Uses rule-based pattern matching for Indonesian language.
     """
     
-    def __init__(self):
-        """Initialize relation extractor with pattern rules."""
+    def __init__(self, use_dynamic_labels: bool = True):
+        """
+        Initialize relation extractor with pattern rules.
+        
+        Args:
+            use_dynamic_labels: Whether to use dynamic relation labeling
+        """
         self.relation_patterns = self._init_relation_patterns()
+        
+        # Reverse relation mappings for bidirectional inference
+        self.reverse_relations = {
+            'child_of': 'parent_of',
+            'parent_of': 'child_of',
+            'married_to': 'married_to',  # symmetric
+            'sibling_of': 'sibling_of',  # symmetric
+            'fought_with': 'fought_with',  # symmetric
+            'killed_by': 'killed',
+            'killed': 'killed_by',
+            'ruled_in': 'ruled_by',
+            'ruled_by': 'ruled_in'
+        }
+        
+        # Initialize dynamic relation labeler
+        self.use_dynamic_labels = use_dynamic_labels and DYNAMIC_LABELER_AVAILABLE
+        self.dynamic_labeler = None
+        if self.use_dynamic_labels:
+            try:
+                self.dynamic_labeler = DynamicRelationLabeler()
+                logger.info("Dynamic relation labeling enabled")
+            except Exception as e:
+                logger.warning(f"Could not initialize dynamic labeler: {e}")
+                self.use_dynamic_labels = False
     
     def _init_relation_patterns(self) -> Dict[str, List[Dict[str, Any]]]:
         """
@@ -217,14 +254,27 @@ class RelationExtractor:
                     object_entity = self._find_entity(object_text, entities)
                     
                     if subject_entity and object_entity:
+                        context_text = match.group(0)
+                        
+                        # Generate dynamic label if enabled
+                        dynamic_label = None
+                        if self.use_dynamic_labels and self.dynamic_labeler:
+                            dynamic_label = self.dynamic_labeler.extract_relation_label(
+                                subject_entity['text'],
+                                object_entity['text'],
+                                context_text,
+                                relation_type
+                            )
+                        
                         relation = {
                             'subject': subject_entity['text'],
                             'subject_type': subject_entity['type'],
                             'relation': relation_type,
                             'object': object_entity['text'],
                             'object_type': object_entity['type'],
-                            'context': match.group(0),
-                            'confidence': 0.8
+                            'context': context_text,
+                            'confidence': 0.8,
+                            'dynamic_label': dynamic_label
                         }
                         relations.append(relation)
         
@@ -232,6 +282,78 @@ class RelationExtractor:
         relations = self._deduplicate_relations(relations)
         
         return relations
+    
+    def extract_relations_from_entities(self, text: str, entities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Extract relations considering entity proximity and co-occurrence.
+        
+        Args:
+            text: Input text
+            entities: List of entities
+            
+        Returns:
+            List of relations
+        """
+        # Pattern-based extraction
+        relations = self.extract_relations_from_text(text, entities)
+        
+        # Add reverse relations (e.g., if A child_of B, then B parent_of A)
+        relations = self._add_reverse_relations(relations)
+        
+        # Proximity-based relation inference (only if no other relations found)
+        if len(relations) < len(entities) * 0.3:  # Less than 30% coverage
+            proximity_relations = self._extract_proximity_relations(text, entities)
+            relations.extend(proximity_relations)
+        
+        # Deduplicate
+        relations = self._deduplicate_relations(relations)
+        
+        return relations
+    
+    def _add_reverse_relations(self, relations: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Add reverse relations for bidirectional relationships.
+        
+        Args:
+            relations: Original relations
+            
+        Returns:
+            Relations with reverse relations added
+        """
+        reverse_relations = []
+        
+        for relation in relations:
+            rel_type = relation['relation']
+            
+            # Check if this relation has a reverse
+            if rel_type in self.reverse_relations:
+                reverse_rel_type = self.reverse_relations[rel_type]
+                
+                # Don't create reverse for symmetric relations (would be duplicate)
+                if rel_type != reverse_rel_type:
+                    # Generate dynamic label for reverse relation if enabled
+                    dynamic_label = None
+                    if self.use_dynamic_labels and self.dynamic_labeler and relation.get('context'):
+                        dynamic_label = self.dynamic_labeler.extract_relation_label(
+                            relation['object'],
+                            relation['subject'],
+                            relation['context'],
+                            reverse_rel_type
+                        )
+                    
+                    reverse_relation = {
+                        'subject': relation['object'],
+                        'subject_type': relation['object_type'],
+                        'relation': reverse_rel_type,
+                        'object': relation['subject'],
+                        'object_type': relation['subject_type'],
+                        'context': relation['context'],
+                        'confidence': relation['confidence'],
+                        'dynamic_label': dynamic_label
+                    }
+                    reverse_relations.append(reverse_relation)
+        
+        return relations + reverse_relations
     
     def _find_entity(self, text: str, entities: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
@@ -288,29 +410,6 @@ class RelationExtractor:
         
         return unique_relations
     
-    def extract_relations_from_entities(self, text: str, entities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """
-        Extract relations considering entity proximity and co-occurrence.
-        
-        Args:
-            text: Input text
-            entities: List of entities
-            
-        Returns:
-            List of relations
-        """
-        # Pattern-based extraction
-        relations = self.extract_relations_from_text(text, entities)
-        
-        # Proximity-based relation inference
-        proximity_relations = self._extract_proximity_relations(text, entities)
-        relations.extend(proximity_relations)
-        
-        # Deduplicate
-        relations = self._deduplicate_relations(relations)
-        
-        return relations
-    
     def _extract_proximity_relations(self, text: str, entities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
         Infer relations based on entity proximity in text.
@@ -338,15 +437,41 @@ class RelationExtractor:
                 if any(word in sentence.lower() for word in ['dan', 'dengan', 'bersama']):
                     for i, e1 in enumerate(sentence_entities[:-1]):
                         for e2 in sentence_entities[i+1:]:
-                            # Infer generic "associated_with" relation
+                            # Infer specific relation type based on entity types and context
+                            relation_type = 'associated_with'
+                            
+                            # Try to infer more specific relation
+                            if e1['type'] == 'PERSON' and e2['type'] == 'PERSON':
+                                if any(word in sentence.lower() for word in ['bersama', 'dengan', 'dan']):
+                                    relation_type = 'associated_with'
+                            elif e1['type'] == 'PERSON' and e2['type'] == 'LOC':
+                                if any(word in sentence.lower() for word in ['di', 'ke', 'dari']):
+                                    relation_type = 'located_in'
+                            elif e1['type'] == 'PERSON' and e2['type'] == 'EVENT':
+                                if any(word in sentence.lower() for word in ['dalam', 'saat', 'ketika']):
+                                    relation_type = 'participated_in'
+                            elif e1['type'] == 'PERSON' and e2['type'] == 'ORG':
+                                relation_type = 'member_of'
+                            
+                            # Generate dynamic label if enabled
+                            dynamic_label = None
+                            if self.use_dynamic_labels and self.dynamic_labeler:
+                                dynamic_label = self.dynamic_labeler.extract_relation_label(
+                                    e1['text'],
+                                    e2['text'],
+                                    sentence.strip(),
+                                    relation_type
+                                )
+                            
                             relations.append({
                                 'subject': e1['text'],
                                 'subject_type': e1['type'],
-                                'relation': 'associated_with',
+                                'relation': relation_type,
                                 'object': e2['text'],
                                 'object_type': e2['type'],
                                 'context': sentence.strip(),
-                                'confidence': 0.5
+                                'confidence': 0.5,
+                                'dynamic_label': dynamic_label
                             })
         
         return relations

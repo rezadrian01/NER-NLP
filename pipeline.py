@@ -181,8 +181,13 @@ class WayangPipeline:
         
         return self.knowledge_graph
     
-    def visualize_graph(self, max_nodes: int = 100):
-        """Create interactive visualization."""
+    def visualize_graph(self, max_nodes: int = 100, light_mode: bool = True):
+        """Create interactive visualization.
+        
+        Args:
+            max_nodes: Maximum nodes to display
+            light_mode: If True, uses optimized 1-level visualization (recommended for large graphs)
+        """
         logger.info("=" * 60)
         logger.info("STEP 6: Graph Visualization")
         logger.info("=" * 60)
@@ -190,25 +195,43 @@ class WayangPipeline:
         if self.knowledge_graph is None or self.knowledge_graph.graph.number_of_nodes() == 0:
             raise ValueError("Knowledge graph not built. Call build_knowledge_graph() first.")
         
+        total_nodes = self.knowledge_graph.graph.number_of_nodes()
+        total_edges = self.knowledge_graph.graph.number_of_edges()
+        
+        logger.info(f"Total graph size: {total_nodes} nodes, {total_edges} edges")
+        
         # Generate visualization
         html_path = self.output_dir / "knowledge_graph.html"
-        self.visualizer.visualize_from_knowledge_graph(
-            self.knowledge_graph,
-            output_path=str(html_path),
-            max_nodes=max_nodes
-        )
+        
+        if light_mode and total_nodes > 50:
+            # Use hub visualization for large graphs
+            logger.info("Using optimized hub visualization (1-level connections)...")
+            self.visualizer.visualize_hub_network(
+                self.knowledge_graph,
+                output_path=str(html_path),
+                top_entities=max_nodes
+            )
+        else:
+            # Use standard visualization
+            self.visualizer.visualize_from_knowledge_graph(
+                self.knowledge_graph,
+                output_path=str(html_path),
+                max_nodes=max_nodes,
+                one_level_per_node=light_mode
+            )
         
         logger.info(f"Visualization saved to {html_path}")
         logger.info(f"Open {html_path} in a web browser to explore the graph")
         
         return str(html_path)
     
-    def run_full_pipeline(self, max_vis_nodes: int = 100):
+    def run_full_pipeline(self, max_vis_nodes: int = 100, light_mode: bool = True):
         """
         Run the complete pipeline.
         
         Args:
             max_vis_nodes: Maximum nodes to display in visualization
+            light_mode: Use optimized visualization (recommended for large graphs)
         """
         logger.info("=" * 60)
         logger.info("WAYANG NER AND KNOWLEDGE GRAPH BUILDER")
@@ -220,7 +243,7 @@ class WayangPipeline:
         self.extract_entities()
         self.extract_relations()
         self.build_knowledge_graph()
-        self.visualize_graph(max_nodes=max_vis_nodes)
+        self.visualize_graph(max_nodes=max_vis_nodes, light_mode=light_mode)
         
         logger.info("=" * 60)
         logger.info("PIPELINE COMPLETED SUCCESSFULLY!")
@@ -278,8 +301,15 @@ def main():
                        help='NER model type')
     parser.add_argument('--max-nodes', type=int, default=100,
                        help='Maximum nodes in visualization')
+    parser.add_argument('--light-mode', action='store_true', default=True,
+                       help='Use optimized visualization (default: True)')
+    parser.add_argument('--full-mode', action='store_true',
+                       help='Show all connections (may be slow for large graphs)')
     
     args = parser.parse_args()
+    
+    # Determine light mode
+    light_mode = not args.full_mode
     
     # Create and run pipeline
     pipeline = WayangPipeline(
@@ -288,7 +318,7 @@ def main():
         ner_model_type=args.ner_model
     )
     
-    pipeline.run_full_pipeline(max_vis_nodes=args.max_nodes)
+    pipeline.run_full_pipeline(max_vis_nodes=args.max_nodes, light_mode=light_mode)
 
 
 if __name__ == "__main__":
