@@ -1,8 +1,32 @@
-# Wayang Stories NER Evaluation
+# Wayang Stories NER & Knowledge Graph System
 
-Named Entity Recognition (NER) model evaluation for Indonesian Wayang stories, comparing spaCy's multilingual model against a custom-trained domain-specific model.
+A comprehensive NLP system for Indonesian Wayang stories featuring Named Entity Recognition (NER) model evaluation and interactive knowledge graph visualization. The system compares spaCy's multilingual model against a custom-trained domain-specific model, then extracts and visualizes entity relationships using multiple relation extraction methods.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  CSV Stories → Annotations → NER Training → Custom Model    │
+│       │                                         │            │
+│       └───────────────┐                        │            │
+│                       ▼                        ▼            │
+│              Knowledge Graph Builder                        │
+│              • Regex (42 patterns)                          │
+│              • Dependency Parsing                           │
+│              • Co-occurrence Stats                          │
+│                       │                                     │
+│                       ▼                                     │
+│        Interactive Visualization (96 entities, 94 edges)    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**🔗 Quick Links:**
+- 📊 [NER Evaluation Results](docs/NER_EVALUATION_SUMMARY.md)
+- 🕸️ [Knowledge Graph Relations](docs/KNOWLEDGE_GRAPH_RELATIONS.md)
+- 🏗️ [System Architecture](docs/ARCHITECTURE.md)
+- 📐 [Architecture Diagrams](docs/architecture.drawio)
 
 ## 🏆 Results
+
+### NER Model Performance
 
 The **Custom Trained Model** significantly outperforms the baseline:
 
@@ -12,7 +36,26 @@ The **Custom Trained Model** significantly outperforms the baseline:
 | **Partial Match F1** | 3.92% | **94.34%** | +90.42% |
 | **Micro F1** | 0.00% | **18.60%** | +18.60% |
 
-📄 View full results: `docs/NER_EVALUATION_SUMMARY.md`
+📄 View full results: [`docs/NER_EVALUATION_SUMMARY.md`](docs/NER_EVALUATION_SUMMARY.md)
+
+### Knowledge Graph Extraction
+
+From 45 manually annotated examples:
+
+| Metric | Count | Details |
+|--------|-------|---------|
+| **Total Entities** | 96 | 68 PERSON, 21 LOC, 5 ORG, 2 EVENT |
+| **Total Relations** | 94 | 683% improvement from baseline |
+| **Graph Density** | 0.0103 | Well-connected network |
+| **Top Relation** | berinteraksi_dengan | 54 instances (social interactions) |
+
+**Relation Extraction Methods:**
+- 🔤 **Regex Patterns** (42 patterns) - Indonesian keywords
+- 🌳 **Dependency Parsing** - Syntactic analysis with spaCy
+- 📊 **Co-occurrence Statistics** - Entity proximity signals
+
+🕸️ View interactive graph: `output/knowledge_graph.html`  
+📖 Method details: [`docs/KNOWLEDGE_GRAPH_RELATIONS.md`](docs/KNOWLEDGE_GRAPH_RELATIONS.md)
 
 ## 📁 Project Structure
 
@@ -33,13 +76,19 @@ The **Custom Trained Model** significantly outperforms the baseline:
 ├── models/                         # Trained models & data
 │   ├── train_data.json             # 36 training examples
 │   ├── test_data.json              # 9 test examples
+│   ├── full_data.json              # All 45 examples
 │   └── custom_ner_model/           # Trained model
 │
-├── output/                         # Evaluation reports
+├── output/                         # Generated outputs
 │   ├── ner_evaluation_comparison.json
-│   └── ner_evaluation_comparison.html
+│   ├── ner_evaluation_comparison.html
+│   ├── knowledge_graph.json        # Graph data
+│   └── knowledge_graph.html        # Interactive viz
 │
 ├── docs/                           # Documentation
+│   ├── ARCHITECTURE.md             # System architecture
+│   ├── architecture.drawio         # Architecture diagrams
+│   ├── KNOWLEDGE_GRAPH_RELATIONS.md
 │   ├── NER_EVALUATION_SUMMARY.md
 │   ├── NER_EVALUATION_FINAL_RESULTS.md
 │   ├── HOW_TO_EXPAND_ANNOTATIONS.md
@@ -47,7 +96,8 @@ The **Custom Trained Model** significantly outperforms the baseline:
 │
 ├── archived/                       # Old/unused files
 ├── data/                           # Source datasets
-├── run_ner_evaluation.py           # Complete workflow
+├── build_knowledge_graph.py        # KG builder
+├── run_ner_evaluation.py           # NER workflow
 └── requirements.txt
 ```
 
@@ -218,6 +268,31 @@ python3 run_ner_evaluation.py
 - Per-label F1 scores
 - Macro/Micro F1
 - Confusion matrices
+
+## 🏗️ Architecture
+
+This system uses a three-layer architecture combining NER evaluation, knowledge graph construction, and interactive visualization. 
+
+**Key Components:**
+1. **Annotation Layer** - Manual entity labeling (45 examples)
+2. **NER Pipeline** - Training & evaluation with spaCy
+3. **Knowledge Graph** - Multi-method relation extraction (Regex, Dependency Parsing, Co-occurrence)
+
+**System Flow:**
+```
+CSV Stories → Annotations → Train/Test Split → NER Training → Model Evaluation
+                                    ↓
+                            full_data.json → Knowledge Graph Builder → Interactive Viz
+```
+
+📐 **For detailed architecture documentation:**
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) - Complete system architecture with diagrams
+- [`docs/architecture.drawio`](docs/architecture.drawio) - Editable diagrams (open with [draw.io](https://app.diagrams.net))
+
+**Technologies:**
+- **NLP**: spaCy 3.x (NER training & parsing)
+- **Graph**: NetworkX (structure) + PyVis (visualization)
+- **Data**: JSON (serialization), Pandas (manipulation)
 
 ## 📝 Next Steps
 

@@ -1,0 +1,578 @@
+<mxfile host="65bd71144e">
+    <diagram name="System Architecture" id="system-architecture">
+        <mxGraphModel dx="1769" dy="1181" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="Wayang Stories NER &amp; Knowledge Graph System Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="300" y="20" width="569" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="input-layer" value="INPUT LAYER" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontStyle=1;verticalAlign=top" parent="1" vertex="1">
+                    <mxGeometry x="40" y="80" width="1080" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="csv-data" value="CSV Stories&#xa;(wayang_stories.csv)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" parent="1" vertex="1">
+                    <mxGeometry x="200" y="110" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="raw-text" value="Raw Indonesian Text&#xa;(Wayang narratives)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" parent="1" vertex="1">
+                    <mxGeometry x="470" y="110" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="annotation-layer" value="ANNOTATION LAYER" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;fontStyle=1;verticalAlign=top" parent="1" vertex="1">
+                    <mxGeometry x="40" y="180" width="360" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="annotate-helper" value="Annotation Helper&#xa;(tools/annotate_helper.py)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" parent="1" vertex="1">
+                    <mxGeometry x="60" y="210" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="manual-annotations" value="Manual Annotations&#xa;(45 examples)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" parent="1" vertex="1">
+                    <mxGeometry x="60" y="290" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="create-training" value="Create Training Data&#xa;(train/test split)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" parent="1" vertex="1">
+                    <mxGeometry x="230" y="290" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="csv-data" target="annotate-helper" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="250" y="170"/>
+                            <mxPoint x="140" y="170"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow-anno1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="annotate-helper" target="manual-annotations">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow-anno2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="manual-annotations" target="create-training">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="storage-layer" value="DATA STORAGE LAYER" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;verticalAlign=top" parent="1" vertex="1">
+                    <mxGeometry x="40" y="400" width="360" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="full-data" value="full_data.json&#xa;(45 examples)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="1" vertex="1">
+                    <mxGeometry x="70" y="440" width="90" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="train-data" value="train_data.json&#xa;(36 examples)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="1" vertex="1">
+                    <mxGeometry x="180" y="440" width="90" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="test-data" value="test_data.json&#xa;(9 examples)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="1" vertex="1">
+                    <mxGeometry x="290" y="440" width="90" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="create-training" target="storage-layer" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ner-layer" value="NER TRAINING &amp; EVALUATION" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;fontStyle=1;verticalAlign=top" parent="1" vertex="1">
+                    <mxGeometry x="440" y="180" width="320" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="ner-trainer" value="NER Trainer&#xa;(ner_trainer.py)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666" parent="1" vertex="1">
+                    <mxGeometry x="460" y="220" width="130" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="training-loop" value="Training Loop&#xa;• 30 iterations&#xa;• Dropout 0.5→0.2&#xa;• Batch size: 8" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;spacingLeft=5" parent="1" vertex="1">
+                    <mxGeometry x="610" y="220" width="130" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="custom-model" value="Custom NER Model&#xa;(spaCy)" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656" parent="1" vertex="1">
+                    <mxGeometry x="460" y="300" width="280" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="ner-evaluator" value="NER Evaluator&#xa;(ner_evaluator.py)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666" parent="1" vertex="1">
+                    <mxGeometry x="460" y="389" width="130" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="compare-models" value="Model Comparison&#xa;• Multilingual vs Custom&#xa;• Metrics: F1, Precision&#xa;• HTML Report" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;spacingLeft=5" parent="1" vertex="1">
+                    <mxGeometry x="610" y="370" width="130" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="evaluation-output" value="Evaluation Reports&#xa;(JSON + HTML)" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#e1d5e7;strokeColor=#9673a6" parent="1" vertex="1">
+                    <mxGeometry x="460" y="480" width="130" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="train-data" target="ner-trainer" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="225" y="530"/>
+                            <mxPoint x="430" y="530"/>
+                            <mxPoint x="430" y="245"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="ner-trainer" target="custom-model" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow-train-loop" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="ner-trainer">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="610" y="245" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="610" y="245"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="custom-model" target="ner-evaluator" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="600" y="370"/>
+                            <mxPoint x="525" y="370"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow-compare" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="compare-models" target="evaluation-output">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow-eval-compare" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.007;entryY=0.479;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="ner-evaluator" target="compare-models">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="test-data" target="ner-evaluator" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="525" y="470"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="kg-layer" value="KNOWLEDGE GRAPH BUILDER" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;verticalAlign=top" parent="1" vertex="1">
+                    <mxGeometry x="800" y="180" width="320" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="kg-loader" value="Data Loader" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666" parent="1" vertex="1">
+                    <mxGeometry x="820" y="220" width="130" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="entity-extractor" value="Entity Extraction" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666" parent="1" vertex="1">
+                    <mxGeometry x="970" y="220" width="130" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="relation-box" value="Relation Extraction (3 Methods)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;verticalAlign=top" parent="1" vertex="1">
+                    <mxGeometry x="820" y="280" width="280" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="regex-method" value="1. Regex (42 patterns)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="830" y="310" width="80" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep-method" value="2. Dependency" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="830" y="350" width="80" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="cooc-method" value="3. Co-occurrence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="920" y="310" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="stats-method" value="Statistics" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="920" y="350" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="networkx-graph" value="NetworkX Graph&#xa;(96 nodes, 94 edges)" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="1" vertex="1">
+                    <mxGeometry x="820" y="410" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pyvis-viz" value="PyVis Visualization&#xa;(Interactive HTML)" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#e1d5e7;strokeColor=#9673a6" parent="1" vertex="1">
+                    <mxGeometry x="970" y="410" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="kg-output" value="Knowledge Graph&#xa;(HTML + JSON)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366" parent="1" vertex="1">
+                    <mxGeometry x="820" y="490" width="130" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="full-data" target="kg-loader" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="115" y="560"/>
+                            <mxPoint x="790" y="560"/>
+                            <mxPoint x="790" y="240"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="custom-model" target="kg-loader" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="600" y="360"/>
+                            <mxPoint x="780" y="360"/>
+                            <mxPoint x="780" y="240"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow-kg-entity" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="kg-loader" target="entity-extractor">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow-entity-rel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="entity-extractor" target="relation-box">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1035" y="270"/>
+                            <mxPoint x="960" y="270"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="relation-box" target="networkx-graph" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="960" y="400"/>
+                            <mxPoint x="885" y="400"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow-graph-viz" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="networkx-graph" target="pyvis-viz">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow-graph-output" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="networkx-graph" target="kg-output">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow-viz-output" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.693;entryY=0.02;entryDx=0;entryDy=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="pyvis-viz" target="kg-output">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1035" y="480"/>
+                            <mxPoint x="910" y="480"/>
+                            <mxPoint x="910" y="490"/>
+                            <mxPoint x="910" y="490"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="output-layer" value="OUTPUT LAYER" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontStyle=1;verticalAlign=top" parent="1" vertex="1">
+                    <mxGeometry x="440" y="585" width="680" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="html-reports" value="HTML Reports&#xa;(Interactive)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666" parent="1" vertex="1">
+                    <mxGeometry x="470" y="615" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="json-data" value="JSON Data&#xa;(Machine-readable)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666" parent="1" vertex="1">
+                    <mxGeometry x="620" y="615" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="viz-output" value="Visualizations&#xa;(Knowledge Graph)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666" parent="1" vertex="1">
+                    <mxGeometry x="830" y="615" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="metrics-output" value="Metrics&#xa;(NER Performance)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666" parent="1" vertex="1">
+                    <mxGeometry x="980" y="615" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="evaluation-output" target="html-reports" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="525" y="580"/>
+                            <mxPoint x="525" y="580"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow-eval-json" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="evaluation-output" target="json-data">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="558" y="575"/>
+                            <mxPoint x="680" y="575"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow-eval-metrics" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="compare-models" target="metrics-output">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="770" y="415"/>
+                            <mxPoint x="770" y="575"/>
+                            <mxPoint x="980" y="575"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arrow11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="kg-output" target="viz-output" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="885" y="590"/>
+                            <mxPoint x="885" y="590"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="legend-box" value="LEGEND" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=1;verticalAlign=top;align=left;spacingLeft=5" parent="1" vertex="1">
+                    <mxGeometry x="40" y="590" width="320" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend-input" value="Input Data" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="60" y="620" width="80" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend-process" value="Processing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="160" y="620" width="80" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend-storage" value="Storage" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="260" y="620" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend-model" value="ML Model" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="60" y="665" width="80" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend-graph" value="Graph" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="160" y="665" width="80" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend-output" value="Output" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="260" y="665" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend-note" value="• Solid arrows = Data flow&#xa;• 96 entities extracted&#xa;• 94 relations detected&#xa;• 3 extraction methods" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="60" y="705" width="260" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="stats-box" value="SYSTEM STATS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;verticalAlign=top;align=left;spacingLeft=5" parent="1" vertex="1">
+                    <mxGeometry x="40" y="770" width="320" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="stats-text" value="• Training: 36 examples • Testing: 9 examples&#xa;• Entities: 96 (68 PERSON, 21 LOC, 5 ORG, 2 EVENT)&#xa;• Relations: 94 (54 social, 17 location, 8 family, etc)&#xa;• Model F1: 23.08% exact, 94.34% partial" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="50" y="800" width="300" height="50" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram name="Data Flow" id="data-flow">
+        <mxGraphModel dx="542" dy="570" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0" adaptiveColors="auto">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="df-title" value="Data Flow Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="400" y="20" width="369" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-anno-flow" value="ANNOTATION FLOW" style="swimlane;fontSize=14;fontStyle=1;fillColor=#fff2cc;strokeColor=#d6b656" parent="1" vertex="1">
+                    <mxGeometry x="40" y="80" width="280" height="400" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-csv" value="CSV Stories" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" parent="df-anno-flow" vertex="1">
+                    <mxGeometry x="70" y="40" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-annotate" value="Manual Annotation&#xa;(Character positions)" style="rounded=1;whiteSpace=wrap;html=1;" parent="df-anno-flow" vertex="1">
+                    <mxGeometry x="70" y="100" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-45-anno" value="45 Annotated&#xa;Examples" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" parent="df-anno-flow" vertex="1">
+                    <mxGeometry x="70" y="170" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-split" value="Train/Test Split&#xa;(80/20)" style="rounded=1;whiteSpace=wrap;html=1;" parent="df-anno-flow" vertex="1">
+                    <mxGeometry x="70" y="240" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-csv-anno" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-anno-flow" source="df-csv" target="df-annotate">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-anno-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-anno-flow" source="df-annotate" target="df-45-anno">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-45-split" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-anno-flow" source="df-45-anno" target="df-split">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-split-train" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryDx=0;entryDy=0;" edge="1" parent="df-anno-flow" source="df-split" target="df-train36">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="140" y="290"/>
+                            <mxPoint x="140" y="300"/>
+                            <mxPoint x="70" y="300"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-split-test" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryDx=0;entryDy=0;" edge="1" parent="df-anno-flow" source="df-split" target="df-test9">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="140" y="290"/>
+                            <mxPoint x="140" y="300"/>
+                            <mxPoint x="210" y="300"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-train36" value="train_data.json&#xa;(36 examples)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="df-anno-flow" vertex="1">
+                    <mxGeometry x="20" y="310" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-test9" value="test_data.json&#xa;(9 examples)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="df-anno-flow" vertex="1">
+                    <mxGeometry x="160" y="310" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-ner-flow" value="NER TRAINING FLOW" style="swimlane;fontSize=14;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450" parent="1" vertex="1">
+                    <mxGeometry x="360" y="80" width="280" height="400" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-load-train" value="Load Training Data" style="rounded=1;whiteSpace=wrap;html=1;" parent="df-ner-flow" vertex="1">
+                    <mxGeometry x="70" y="40" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-init-model" value="Initialize spaCy&#xa;Blank Model" style="rounded=1;whiteSpace=wrap;html=1;" parent="df-ner-flow" vertex="1">
+                    <mxGeometry x="70" y="100" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-train-loop" value="Training Loop&#xa;(30 iterations)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" parent="df-ner-flow" vertex="1">
+                    <mxGeometry x="70" y="170" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-custom-model" value="Custom NER Model&#xa;F1: 23.08% / 94.34%" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656" parent="df-ner-flow" vertex="1">
+                    <mxGeometry x="70" y="240" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-evaluate" value="Evaluate on Test Set" style="rounded=1;whiteSpace=wrap;html=1;" parent="df-ner-flow" vertex="1">
+                    <mxGeometry x="70" y="320" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-load-init" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-ner-flow" source="df-load-train" target="df-init-model">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-init-loop" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-ner-flow" source="df-init-model" target="df-train-loop">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-loop-model" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-ner-flow" source="df-train-loop" target="df-custom-model">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-model-eval" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-ner-flow" source="df-custom-model" target="df-evaluate">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-kg-flow" value="KNOWLEDGE GRAPH FLOW" style="swimlane;fontSize=14;fontStyle=1;fillColor=#d5e8d4;strokeColor=#82b366" parent="1" vertex="1">
+                    <mxGeometry x="680" y="80" width="440" height="400" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-load-full" value="Load full_data.json&#xa;(All 45 examples)" style="rounded=1;whiteSpace=wrap;html=1;" parent="df-kg-flow" vertex="1">
+                    <mxGeometry x="40" y="40" width="150" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-load-model" value="Load Custom&#xa;NER Model" style="rounded=1;whiteSpace=wrap;html=1;" parent="df-kg-flow" vertex="1">
+                    <mxGeometry x="250" y="40" width="150" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-extract-ent" value="Extract Entities&#xa;(96 nodes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" parent="df-kg-flow" vertex="1">
+                    <mxGeometry x="145" y="110" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-rel-title" value="Extract Relations (3 Methods):" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="df-kg-flow" vertex="1">
+                    <mxGeometry x="145" y="160" width="150" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-regex" value="1. Regex&#xa;(42 patterns)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11" parent="df-kg-flow" vertex="1">
+                    <mxGeometry x="40" y="190" width="110" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-dep" value="2. Dependency&#xa;(Syntax)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11" parent="df-kg-flow" vertex="1">
+                    <mxGeometry x="165" y="190" width="110" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-cooc" value="3. Co-occur&#xa;(Statistics)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11" parent="df-kg-flow" vertex="1">
+                    <mxGeometry x="290" y="190" width="110" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-graph" value="NetworkX Graph&#xa;(94 edges)" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="df-kg-flow" vertex="1">
+                    <mxGeometry x="145" y="250" width="150" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-viz" value="PyVis Interactive&#xa;Visualization" style="rounded=1;whiteSpace=wrap;html=1;" parent="df-kg-flow" vertex="1">
+                    <mxGeometry x="145" y="320" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-kg-models" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-kg-flow" source="df-load-full" target="df-extract-ent">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="115" y="100"/>
+                            <mxPoint x="220" y="100"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-kg-model2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-kg-flow" source="df-load-model" target="df-extract-ent">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="325" y="100"/>
+                            <mxPoint x="220" y="100"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-ent-rel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-kg-flow" source="df-extract-ent" target="df-regex">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="220" y="170"/>
+                            <mxPoint x="95" y="170"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-ent-dep" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-kg-flow" source="df-extract-ent" target="df-dep">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-ent-cooc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-kg-flow" source="df-extract-ent" target="df-cooc">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="220" y="170"/>
+                            <mxPoint x="345" y="170"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-regex-graph" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-kg-flow" source="df-regex" target="df-graph">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-dep-graph" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-kg-flow" source="df-dep" target="df-graph">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-cooc-graph" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-kg-flow" source="df-cooc" target="df-graph">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-graph-viz" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="df-kg-flow" source="df-graph" target="df-viz">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="df-train36" target="df-load-train" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="180" y="420"/>
+                            <mxPoint x="180" y="460"/>
+                            <mxPoint x="340" y="460"/>
+                            <mxPoint x="340" y="140"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="df-custom-model" target="df-load-model" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="660" y="350"/>
+                            <mxPoint x="660" y="110"/>
+                            <mxPoint x="910" y="110"/>
+                            <mxPoint x="910" y="145"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-test-eval" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="df-test9" target="df-evaluate">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="340" y="420"/>
+                            <mxPoint x="340" y="420"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-full-kg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="df-train36" target="df-load-full">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="110" y="470"/>
+                            <mxPoint x="640" y="470"/>
+                            <mxPoint x="640" y="145"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-output-box" value="OUTPUTS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontStyle=1;verticalAlign=top" parent="1" vertex="1">
+                    <mxGeometry x="40" y="500" width="1080" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-out1" value="ner_evaluation_&#xa;comparison.html" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="100" y="540" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-out2" value="ner_evaluation_&#xa;comparison.json" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="270" y="540" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-out3" value="knowledge_graph&#xa;.html" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="440" y="540" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-out4" value="knowledge_graph&#xa;.json" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="610" y="540" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-out5" value="custom_ner_model/&#xa;(trained weights)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="780" y="540" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-out6" value="Entity visualizations&#xa;(per-entity HTML)" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11" parent="1" vertex="1">
+                    <mxGeometry x="950" y="540" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-perf" value="PERFORMANCE METRICS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;verticalAlign=top;align=left;spacingLeft=5" parent="1" vertex="1">
+                    <mxGeometry x="40" y="650" width="540" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-perf-text" value="NER Model Comparison:&#xa;• Multilingual Model: 0.00% Exact F1, 3.92% Partial F1&#xa;• Custom Model: 23.08% Exact F1, 94.34% Partial F1&#xa;&#xa;Knowledge Graph Stats:&#xa;• Entities: 96 (68 PERSON, 21 LOC, 5 ORG, 2 EVENT)&#xa;• Relations: 94 (berinteraksi_dengan: 54, terkait_dengan_lokasi: 17, etc)&#xa;• Graph Density: 0.0103 (683% improvement from baseline)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;spacingLeft=5" parent="1" vertex="1">
+                    <mxGeometry x="50" y="680" width="520" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-tech" value="TECHNOLOGY STACK" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;verticalAlign=top;align=left;spacingLeft=5" parent="1" vertex="1">
+                    <mxGeometry x="620" y="650" width="500" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-tech-text" value="Core Libraries:&#xa;• spaCy 3.x - NER training &amp; inference&#xa;• NetworkX - Graph data structure &amp; algorithms&#xa;• PyVis - Interactive HTML visualization&#xa;• Pandas - Data manipulation&#xa;&#xa;Methods:&#xa;• Regex pattern matching (42 patterns)&#xa;• Dependency parsing (syntactic analysis)&#xa;• Co-occurrence statistics (implicit relations)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;spacingLeft=5" parent="1" vertex="1">
+                    <mxGeometry x="630" y="680" width="480" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="df-arrow-viz-out3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="df-viz" target="df-out3">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="900" y="490"/>
+                            <mxPoint x="505" y="490"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-eval-out2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.464;entryY=0.008;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="df-evaluate" target="df-out2">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="500" y="490"/>
+                            <mxPoint x="330" y="490"/>
+                            <mxPoint x="330" y="541"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-eval-out" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.464;entryY=-0.004;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="df-evaluate" target="df-out1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="500" y="490"/>
+                            <mxPoint x="160" y="490"/>
+                            <mxPoint x="160" y="540"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-viz-out4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="df-viz">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="900" y="490"/>
+                            <mxPoint x="670" y="490"/>
+                        </Array>
+                        <mxPoint x="670" y="540" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-model-out" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="df-custom-model" target="df-out5">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="600" y="365"/>
+                            <mxPoint x="600" y="460"/>
+                            <mxPoint x="845" y="460"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="df-arrow-viz-out6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="df-viz">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="900" y="490"/>
+                            <mxPoint x="1010" y="490"/>
+                        </Array>
+                        <mxPoint x="1010" y="540" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
