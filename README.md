@@ -19,10 +19,13 @@ A comprehensive NLP system for Indonesian Wayang stories featuring Named Entity 
 ```
 
 **🔗 Quick Links:**
-- 📊 [NER Evaluation Results](docs/NER_EVALUATION_SUMMARY.md)
+- � [Quick Start Guide](QUICKSTART.md) - One command to run everything
+- �📊 [NER Evaluation Results](docs/NER_EVALUATION_SUMMARY.md)
 - 🕸️ [Knowledge Graph Relations](docs/KNOWLEDGE_GRAPH_RELATIONS.md)
 - 🏗️ [System Architecture](docs/ARCHITECTURE.md)
 - 📐 [Architecture Diagrams](docs/architecture.drawio)
+- 📁 [Project Structure](docs/PROJECT_STRUCTURE.md)
+- 🧹 [Cleanup Summary](docs/CLEANUP_SUMMARY.md)
 
 ## 🏆 Results
 
@@ -101,17 +104,43 @@ From 45 manually annotated examples:
 └── requirements.txt
 ```
 
-## ✨ Features
+## 🚀 Quick Start
 
-### 1. Knowledge Graph Visualization
-- **Interactive Network**: Explore entity relationships through physics-based graph layout
-- **Entity Types**: Color-coded PERSON (blue), LOC (teal), ORG (orange), EVENT (red)
-- **Relation Categories**: Family (pink), Conflict (red), Location (cyan), Participation (green)
-- **Smart Sizing**: Node size reflects connectivity; edge width shows relation frequency
-- **Rich Interactions**: Hover tooltips, zoom, pan, navigation controls
-- **Full Dataset**: Visualizes all 45 manually annotated examples
+### One-Command Setup & Execution
 
-### 2. Dual Model Evaluation
+The easiest way to run the entire pipeline:
+
+```bash
+./run_all.sh
+```
+
+This **automated script** will:
+- ✅ Setup virtual environment (creates if not exists)
+- ✅ Install all dependencies including spaCy model
+- ✅ Train custom NER model (30 iterations)
+- ✅ Evaluate and compare with baseline model
+- ✅ Build knowledge graph with 3 extraction methods
+- ✅ Generate interactive visualizations
+- ✅ Display results summary with file locations
+
+**📖 For detailed usage, troubleshooting, and manual steps, see:** [`QUICKSTART.md`](QUICKSTART.md)
+
+### Results Location
+
+After running the script, find your results here:
+- **Knowledge Graph**: `output/knowledge_graph.html` (96 entities, 94 relations)
+- **NER Evaluation**: `output/ner_evaluation_comparison.html` (model comparison)
+- **Execution Log**: `output/pipeline_execution.log` (detailed logs)
+- **Trained Model**: `models/custom_ner_model/` (custom weights)
+
+### Manual Step-by-Step (Alternative)
+
+If you prefer manual control, follow these steps:
+
+<details>
+<summary>Click to expand manual setup instructions</summary>
+
+#### 1. Setup Environment
 
 ```bash
 # Create virtual environment
@@ -125,53 +154,61 @@ pip install -r requirements.txt
 python -m spacy download xx_ent_wiki_sm
 ```
 
-### 2. Build Knowledge Graph
+#### 2. Train NER Model
 
 ```bash
-# Build interactive knowledge graph from annotations
+python3 ner_trainer.py
+```
+
+#### 3. Evaluate Models
+
+```bash
+python3 compare_ner_models.py
+```
+
+#### 4. Build Knowledge Graph
+
+```bash
 python3 build_knowledge_graph.py
-
-# View the graph
-xdg-open output/knowledge_graph.html
 ```
 
-This creates an interactive visualization showing:
-- 96 entities from all annotated data
-- Relationships between entities (family, conflict, location)
-- Color-coded by entity type
-- Node size based on connectivity
-
-### 3. Run Complete Evaluation
-
-```bash
-# Run the entire workflow
-python3 run_ner_evaluation.py
-```
-
-This will:
-1. Generate training data (36 train / 9 test examples)
-2. Train custom NER model (~10 seconds)
-3. Compare models and generate reports
-
-### 4. View Results
+#### 5. View Results
 
 ```bash
 # Open interactive HTML report
 xdg-open output/ner_evaluation_comparison.html
-
-# Or read the summary
-cat docs/NER_EVALUATION_SUMMARY.md
+xdg-open output/knowledge_graph.html
 ```
+
+</details>
+
+## ✨ Features
+
+### 1. Knowledge Graph Visualization
+- **Interactive Network**: Explore entity relationships through physics-based graph layout
+- **Entity Types**: Color-coded PERSON (blue), LOC (teal), ORG (orange), EVENT (red)
+- **Relation Categories**: Family (pink), Conflict (red), Location (cyan), Participation (green)
+- **Smart Sizing**: Node size reflects connectivity; edge width shows relation frequency
+- **Rich Interactions**: Hover tooltips, zoom, pan, navigation controls
+- **Full Dataset**: Visualizes all 45 manually annotated examples
+
+### 2. Multi-Method Relation Extraction
+- **Regex Patterns**: 42 Indonesian language patterns for explicit relations
+- **Dependency Parsing**: Syntactic analysis using spaCy for implicit relations
+- **Co-occurrence Statistics**: Entity proximity signals for social interactions
+
+### 3. Dual Model Evaluation
+- Compare custom-trained vs multilingual baseline models
+- Detailed per-entity performance metrics
+- Interactive HTML reports with visualizations
 
 ## 📊 Knowledge Graph Statistics
 
 From the 45 manually annotated Wayang stories:
 - **96 Total Entities**: 68 PERSON, 21 LOC, 5 ORG, 2 EVENT
-- **12 Relations Extracted**: Family (8), Conflict (3), Location (1)
-- **Top Relations**: sibling_of (4), fought_with (2), child_of (2)
-- **Most Connected**: Nakula, Sadewa, Paksi Wilmuna, Kurawa
-
-The knowledge graph provides insights into character relationships, locations, and events across the annotated corpus.
+- **94 Relations Extracted**: Social (54), Location (17), Family (8), etc.
+- **Graph Density**: 0.0103 (683% improvement from baseline)
+- **Top Relation**: berinteraksi_dengan (54 instances)
 
 ## 📊 Entity Types
 
