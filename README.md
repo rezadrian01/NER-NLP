@@ -51,9 +51,17 @@ The **Custom Trained Model** significantly outperforms the baseline:
 └── requirements.txt
 ```
 
-## 🚀 Quick Start
+## ✨ Features
 
-### 1. Setup Environment
+### 1. Knowledge Graph Visualization
+- **Interactive Network**: Explore entity relationships through physics-based graph layout
+- **Entity Types**: Color-coded PERSON (blue), LOC (teal), ORG (orange), EVENT (red)
+- **Relation Categories**: Family (pink), Conflict (red), Location (cyan), Participation (green)
+- **Smart Sizing**: Node size reflects connectivity; edge width shows relation frequency
+- **Rich Interactions**: Hover tooltips, zoom, pan, navigation controls
+- **Full Dataset**: Visualizes all 45 manually annotated examples
+
+### 2. Dual Model Evaluation
 
 ```bash
 # Create virtual environment
@@ -67,10 +75,26 @@ pip install -r requirements.txt
 python -m spacy download xx_ent_wiki_sm
 ```
 
-### 2. Run Complete Evaluation
+### 2. Build Knowledge Graph
 
 ```bash
-# Run the entire workflow (auto)
+# Build interactive knowledge graph from annotations
+python3 build_knowledge_graph.py
+
+# View the graph
+xdg-open output/knowledge_graph.html
+```
+
+This creates an interactive visualization showing:
+- 96 entities from all annotated data
+- Relationships between entities (family, conflict, location)
+- Color-coded by entity type
+- Node size based on connectivity
+
+### 3. Run Complete Evaluation
+
+```bash
+# Run the entire workflow
 python3 run_ner_evaluation.py
 ```
 
@@ -79,7 +103,7 @@ This will:
 2. Train custom NER model (~10 seconds)
 3. Compare models and generate reports
 
-### 3. View Results
+### 4. View Results
 
 ```bash
 # Open interactive HTML report
@@ -88,6 +112,16 @@ xdg-open output/ner_evaluation_comparison.html
 # Or read the summary
 cat docs/NER_EVALUATION_SUMMARY.md
 ```
+
+## 📊 Knowledge Graph Statistics
+
+From the 45 manually annotated Wayang stories:
+- **96 Total Entities**: 68 PERSON, 21 LOC, 5 ORG, 2 EVENT
+- **12 Relations Extracted**: Family (8), Conflict (3), Location (1)
+- **Top Relations**: sibling_of (4), fought_with (2), child_of (2)
+- **Most Connected**: Nakula, Sadewa, Paksi Wilmuna, Kurawa
+
+The knowledge graph provides insights into character relationships, locations, and events across the annotated corpus.
 
 ## 📊 Entity Types
 
@@ -100,7 +134,17 @@ The model recognizes four entity types:
 
 ## 🛠️ Manual Steps
 
-### Train Only
+### Build Knowledge Graph Only
+
+```bash
+python3 build_knowledge_graph.py
+```
+
+Outputs:
+- `output/knowledge_graph.html` - Interactive visualization
+- `output/knowledge_graph.json` - Graph data export
+
+### Train Model Only
 
 ```bash
 python3 evaluation/ner_trainer.py
