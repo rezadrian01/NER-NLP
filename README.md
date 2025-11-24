@@ -184,8 +184,14 @@ python3 run_ner_evaluation.py
 
 ## 👤 Author
 
-Ahmad Reza Adrian  
+Kelompok 1  
 NLP Final Assignment - November 2025
+
+**Members:**
+1. Achmad Mirzaram Dhani
+2. Afito Indra Permana
+3. Ahmad Reza Adrian
+4. Ahmad Wildan Putro Santoso
 
 ## 📄 License
 

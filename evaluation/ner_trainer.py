@@ -1,10 +1,8 @@
 """
-Custom NER Model Trainer
-Author: Ahmad Reza Adrian
+Custom NER Model Trainer for Wayang Stories
+Author: Kelompok 1
 
-This module trains a custom spaCy NER model using annotated data
-from the wayang stories dataset.
-"""
+Train a custom spaCy NER model using manually annotated data.
 
 import spacy
 from spacy.training import Example

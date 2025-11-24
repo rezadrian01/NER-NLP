@@ -1,6 +1,6 @@
 """
 Manual Entity Annotations for Wayang Stories
-Author: Ahmad Reza Adrian
+Author: Kelompok 1
 
 This module contains manually curated entity annotations for training a high-quality NER model.
 Entities are hardcoded with exact character positions for maximum accuracy.
