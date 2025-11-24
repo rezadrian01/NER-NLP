@@ -1,0 +1,195 @@
+[
+  [
+    "Raden Yudistira adalah kakak tertua Pandawa.",
+    {
+      "entities": [
+        [
+          0,
+          16,
+          "PERSON"
+        ],
+        [
+          37,
+          44,
+          "ORG"
+        ]
+      ]
+    }
+  ],
+  [
+    "Batara Wisnu telah menitis sebagai Prabu Kresna di Kerajaan Dwarawati.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          36,
+          48,
+          "PERSON"
+        ],
+        [
+          52,
+          70,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Di Kahyangan Ekapratala, Batara Nagaraja Ekawarna dihadap putrinya Batari Pretiwi.",
+    {
+      "entities": [
+        [
+          3,
+          24,
+          "LOC"
+        ],
+        [
+          26,
+          51,
+          "PERSON"
+        ],
+        [
+          68,
+          83,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Gatutkaca adalah putra Arya Wrekodara yang sakti mandraguna.",
+    {
+      "entities": [
+        [
+          0,
+          16,
+          "PERSON"
+        ],
+        [
+          30,
+          45,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Kresna dan Arya Wrekodara adalah saudara sepupu, sama-sama cucu Prabu Kuntiboja.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          17,
+          32,
+          "PERSON"
+        ],
+        [
+          73,
+          88,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Bomantara raja Surateleng mengepung Kahyangan Suralaya.",
+    {
+      "entities": [
+        [
+          0,
+          15,
+          "PERSON"
+        ],
+        [
+          21,
+          31,
+          "LOC"
+        ],
+        [
+          43,
+          62,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Arjuna dan Dewi Sumbadra telah datang ke Dwarawati untuk meminang Dewi Sitisundari.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          17,
+          31,
+          "PERSON"
+        ],
+        [
+          48,
+          57,
+          "LOC"
+        ],
+        [
+          74,
+          92,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Sitija berhasil mengalahkan Prabu Bomantara dan Prabu Narakasura.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          35,
+          50,
+          "PERSON"
+        ],
+        [
+          55,
+          71,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Begawan Durna mengajar ilmu perang kepada Pandawa dan Kurawa.",
+    {
+      "entities": [
+        [
+          0,
+          13,
+          "PERSON"
+        ],
+        [
+          43,
+          50,
+          "ORG"
+        ],
+        [
+          55,
+          61,
+          "ORG"
+        ]
+      ]
+    }
+  ]
+]

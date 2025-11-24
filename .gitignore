@@ -10,7 +10,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -37,14 +36,22 @@ env/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Output files
+# Output files (generated)
 output/*.csv
 output/*.json
 output/*.html
+output/entity_visualizations/*.html
+output/test_visualizations/*.html
+output/test_visualizations/*.json
+output/archives/*
 !output/.gitkeep
+!output/README.md
 
-# Models
-models/*
+# Models (downloaded separately)
+models/*.bin
+models/*.pt
+models/*.pth
+models/*.spacy
 !models/.gitkeep
 
 # Logs
@@ -53,14 +60,20 @@ models/*
 # Environment variables
 .env
 
-# spaCy models (downloaded separately)
-*.spacy
-
 # Large files
 *.pkl
 *.pickle
 
-# Test outputs
+# Test outputs at root (should be moved to output/test_visualizations/)
 test_*.html
 sample_*.html
 sample_*.json
+
+# Data archives
+data/*.zip
+data/*.tar.gz
+
+# Temporary files
+tmp/
+temp/
+*.tmp
