@@ -25,11 +25,11 @@ logger = logging.getLogger(__name__)
 
 
 class NEREvaluator:
-    """
-    Comprehensive NER evaluation with multiple metrics.
-    """
-    
-    def __init__(self, model_name: str):
+"""
+Comprehensive NER Model Evaluator
+Author: Kelompok 1
+
+Provides detailed evaluation metrics for Named Entity Recognition models.    def __init__(self, model_name: str):
         """
         Initialize evaluator.
         

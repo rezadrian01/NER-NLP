@@ -1,8 +1,14 @@
 # NER Model Evaluation: Final Results
 
-**Author:** Ahmad Reza Adrian  
+**Author:** Kelompok 1  
 **Date:** November 24, 2025  
 **Project:** Wayang Stories NER Evaluation
+
+**Members:**
+1. Achmad Mirzaram Dhani
+2. Afito Indra Permana
+3. Ahmad Reza Adrian
+4. Ahmad Wildan Putro Santoso
 
 ---
 

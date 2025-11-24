@@ -137,4 +137,5 @@ xdg-open output/ner_evaluation_comparison.html
 
 **Status:** ✅ Complete  
 **Date:** November 24, 2025  
+**Team:** Kelompok 1  
 **Action:** All old files safely archived, new structure tested and working

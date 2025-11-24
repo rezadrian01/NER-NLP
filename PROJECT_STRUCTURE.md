@@ -204,4 +204,5 @@ This is a clean, focused NER evaluation system that:
 
 ---
 
+**Team:** Kelompok 1  
 Last updated: November 24, 2025

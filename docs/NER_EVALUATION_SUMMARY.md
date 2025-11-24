@@ -292,8 +292,14 @@ The evaluation **successfully demonstrates** that:
 
 ## 📞 Contact
 
-**Author:** Ahmad Reza Adrian  
+**Author:** Kelompok 1  
 **Project:** NLP Final Assignment - Wayang Stories NER  
 **Date:** November 24, 2025
+
+**Members:**
+1. Achmad Mirzaram Dhani
+2. Afito Indra Permana
+3. Ahmad Reza Adrian
+4. Ahmad Wildan Putro Santoso
 
 For questions or improvements, please refer to the documentation files or extend the manual annotations in `manual_annotations.py`.
