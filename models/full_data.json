@@ -1,0 +1,927 @@
+[
+  [
+    "Batara Indra adalah raja para jawata di Kahyangan Suralaya.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          41,
+          60,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Batara Aswan dan Batara Aswin mengobati Dewi Sitisundari.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          17,
+          29,
+          "PERSON"
+        ],
+        [
+          40,
+          58,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Nakula dan Sadewa adalah saudara kembar dalam Pandawa.",
+    {
+      "entities": [
+        [
+          0,
+          6,
+          "PERSON"
+        ],
+        [
+          11,
+          17,
+          "PERSON"
+        ],
+        [
+          47,
+          54,
+          "ORG"
+        ]
+      ]
+    }
+  ],
+  [
+    "Arya Setyaki dari Kesatrian Swalabumi dan Patih Udawa membantu Prabu Kresna.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          18,
+          41,
+          "LOC"
+        ],
+        [
+          46,
+          57,
+          "PERSON"
+        ],
+        [
+          65,
+          77,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Patih Pancadnyana adalah patih utama Prabu Bomantara di Kerajaan Surateleng.",
+    {
+      "entities": [
+        [
+          0,
+          17,
+          "PERSON"
+        ],
+        [
+          38,
+          53,
+          "PERSON"
+        ],
+        [
+          57,
+          77,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Kresna Wasudewa di Kerajaan Dwarawati dihadap Raden Samba Wisnubrata.",
+    {
+      "entities": [
+        [
+          0,
+          22,
+          "PERSON"
+        ],
+        [
+          26,
+          44,
+          "LOC"
+        ],
+        [
+          53,
+          76,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Paksi Wilmuna dan Paksi Wildata adalah dua burung raksasa kakak beradik.",
+    {
+      "entities": [
+        [
+          0,
+          13,
+          "PERSON"
+        ],
+        [
+          18,
+          31,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Duryudana memimpin pasukan Kurawa.",
+    {
+      "entities": [
+        [
+          0,
+          15,
+          "PERSON"
+        ],
+        [
+          33,
+          39,
+          "ORG"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Sitija mengendarai Paksi Wilmuna untuk berperang.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          26,
+          39,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Abimanyu adalah putra Arjuna dan Subadra.",
+    {
+      "entities": [
+        [
+          0,
+          14,
+          "PERSON"
+        ],
+        [
+          29,
+          35,
+          "PERSON"
+        ],
+        [
+          40,
+          47,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Dewi Drupadi adalah istri para Pandawa.",
+    {
+      "entities": [
+        [
+          0,
+          13,
+          "PERSON"
+        ],
+        [
+          32,
+          39,
+          "ORG"
+        ]
+      ]
+    }
+  ],
+  [
+    "Dewi Sitisundari dipertunangkan dengan Raden Abimanyu.",
+    {
+      "entities": [
+        [
+          0,
+          18,
+          "PERSON"
+        ],
+        [
+          39,
+          53,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Pertempuran Brubuh menandai berakhirnya Perang Bharatayudha.",
+    {
+      "entities": [
+        [
+          0,
+          19,
+          "EVENT"
+        ],
+        [
+          40,
+          60,
+          "EVENT"
+        ]
+      ]
+    }
+  ],
+  [
+    "Kerajaan Prajatisa diperintah oleh Prabu Narakasura.",
+    {
+      "entities": [
+        [
+          0,
+          18,
+          "LOC"
+        ],
+        [
+          36,
+          52,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Narakasura menantang Prabu Kresna untuk perang.",
+    {
+      "entities": [
+        [
+          0,
+          16,
+          "PERSON"
+        ],
+        [
+          27,
+          39,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Arjuna berperang melawan Kurawa di medan Kurukshetra.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          31,
+          37,
+          "ORG"
+        ],
+        [
+          49,
+          60,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Kerajaan Trajutresna adalah nama baru untuk Surateleng-Prajatisa.",
+    {
+      "entities": [
+        [
+          0,
+          20,
+          "LOC"
+        ],
+        [
+          44,
+          66,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Kerajaan Hastina adalah pusat kekuasaan Kurawa.",
+    {
+      "entities": [
+        [
+          0,
+          16,
+          "LOC"
+        ],
+        [
+          41,
+          47,
+          "ORG"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Karna adalah anak Prabu Kunthi yang dibuang.",
+    {
+      "entities": [
+        [
+          0,
+          11,
+          "PERSON"
+        ],
+        [
+          24,
+          36,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Kyai Togog dan Bilung adalah panakawan Prabu Narakasura.",
+    {
+      "entities": [
+        [
+          0,
+          10,
+          "PERSON"
+        ],
+        [
+          15,
+          21,
+          "PERSON"
+        ],
+        [
+          40,
+          56,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Batara Narada turun dari angkasa melerai perkelahian Raden Sitija dan Raden Gatutkaca.",
+    {
+      "entities": [
+        [
+          0,
+          13,
+          "PERSON"
+        ],
+        [
+          54,
+          66,
+          "PERSON"
+        ],
+        [
+          71,
+          87,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Sitija menjadi Prabu Boma Narakasura raja Surateleng-Prajatisa.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          21,
+          42,
+          "PERSON"
+        ],
+        [
+          48,
+          70,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Gunung Jamurdipa adalah lokasi Kawah Candradimuka berada.",
+    {
+      "entities": [
+        [
+          0,
+          16,
+          "LOC"
+        ],
+        [
+          32,
+          50,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Ditya Yayahgriwa, Ditya Ancakogra, Ditya Mahodara, dan Ditya Amisunda mengabdi kepada Raden Sitija.",
+    {
+      "entities": [
+        [
+          0,
+          17,
+          "PERSON"
+        ],
+        [
+          19,
+          34,
+          "PERSON"
+        ],
+        [
+          36,
+          51,
+          "PERSON"
+        ],
+        [
+          57,
+          72,
+          "PERSON"
+        ],
+        [
+          90,
+          102,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Pandawa dan Kurawa bertarung dalam Perang Bharatayudha.",
+    {
+      "entities": [
+        [
+          0,
+          7,
+          "ORG"
+        ],
+        [
+          12,
+          18,
+          "ORG"
+        ],
+        [
+          35,
+          55,
+          "EVENT"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Srikandi adalah putri Kerajaan Madukara yang perkasa.",
+    {
+      "entities": [
+        [
+          0,
+          15,
+          "PERSON"
+        ],
+        [
+          29,
+          47,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Baladewa melamar Dewi Sitisundari untuk Raden Lesmana Mandrakumara.",
+    {
+      "entities": [
+        [
+          0,
+          14,
+          "PERSON"
+        ],
+        [
+          23,
+          41,
+          "PERSON"
+        ],
+        [
+          48,
+          76,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Sitija dijedi di Kawah Candradimuka seperti Raden Gatutkaca dulu.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          23,
+          41,
+          "LOC"
+        ],
+        [
+          51,
+          67,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Kerajaan Mandura didirikan oleh Prabu Kuntiboja.",
+    {
+      "entities": [
+        [
+          0,
+          16,
+          "LOC"
+        ],
+        [
+          33,
+          48,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Bisma adalah kakek dari Pandawa dan Kurawa.",
+    {
+      "entities": [
+        [
+          0,
+          11,
+          "PERSON"
+        ],
+        [
+          30,
+          37,
+          "ORG"
+        ],
+        [
+          42,
+          48,
+          "ORG"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Kunthi adalah ibu para Pandawa di Kerajaan Amarta.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          29,
+          36,
+          "ORG"
+        ],
+        [
+          40,
+          56,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Bima atau Werkudara terkenal karena kekuatannya.",
+    {
+      "entities": [
+        [
+          0,
+          10,
+          "PERSON"
+        ],
+        [
+          16,
+          25,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Salya raja Kerajaan Mandraka memihak Kurawa.",
+    {
+      "entities": [
+        [
+          0,
+          11,
+          "PERSON"
+        ],
+        [
+          17,
+          35,
+          "LOC"
+        ],
+        [
+          44,
+          50,
+          "ORG"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Kresna memerintah di Kerajaan Dwarawati dan menikah dengan Dewi Rukmini.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          27,
+          45,
+          "LOC"
+        ],
+        [
+          66,
+          78,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Dewi Rukmini adalah permaisuri Prabu Kresna di Kerajaan Dwarawati.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          32,
+          44,
+          "PERSON"
+        ],
+        [
+          48,
+          66,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Sitija dan Dewi Sitisundari adalah anak Batari Pretiwi yang mencari ayah mereka Batara Wisnu.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          17,
+          35,
+          "PERSON"
+        ],
+        [
+          47,
+          62,
+          "PERSON"
+        ],
+        [
+          89,
+          101,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Yudistira adalah kakak tertua Pandawa.",
+    {
+      "entities": [
+        [
+          0,
+          16,
+          "PERSON"
+        ],
+        [
+          37,
+          44,
+          "ORG"
+        ]
+      ]
+    }
+  ],
+  [
+    "Batara Wisnu telah menitis sebagai Prabu Kresna di Kerajaan Dwarawati.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          36,
+          48,
+          "PERSON"
+        ],
+        [
+          52,
+          70,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Di Kahyangan Ekapratala, Batara Nagaraja Ekawarna dihadap putrinya Batari Pretiwi.",
+    {
+      "entities": [
+        [
+          3,
+          24,
+          "LOC"
+        ],
+        [
+          26,
+          51,
+          "PERSON"
+        ],
+        [
+          68,
+          83,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Gatutkaca adalah putra Arya Wrekodara yang sakti mandraguna.",
+    {
+      "entities": [
+        [
+          0,
+          16,
+          "PERSON"
+        ],
+        [
+          30,
+          45,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Kresna dan Arya Wrekodara adalah saudara sepupu, sama-sama cucu Prabu Kuntiboja.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          17,
+          32,
+          "PERSON"
+        ],
+        [
+          73,
+          88,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Prabu Bomantara raja Surateleng mengepung Kahyangan Suralaya.",
+    {
+      "entities": [
+        [
+          0,
+          15,
+          "PERSON"
+        ],
+        [
+          21,
+          31,
+          "LOC"
+        ],
+        [
+          43,
+          62,
+          "LOC"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Arjuna dan Dewi Sumbadra telah datang ke Dwarawati untuk meminang Dewi Sitisundari.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          17,
+          31,
+          "PERSON"
+        ],
+        [
+          48,
+          57,
+          "LOC"
+        ],
+        [
+          74,
+          92,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Raden Sitija berhasil mengalahkan Prabu Bomantara dan Prabu Narakasura.",
+    {
+      "entities": [
+        [
+          0,
+          12,
+          "PERSON"
+        ],
+        [
+          35,
+          50,
+          "PERSON"
+        ],
+        [
+          55,
+          71,
+          "PERSON"
+        ]
+      ]
+    }
+  ],
+  [
+    "Begawan Durna mengajar ilmu perang kepada Pandawa dan Kurawa.",
+    {
+      "entities": [
+        [
+          0,
+          13,
+          "PERSON"
+        ],
+        [
+          43,
+          50,
+          "ORG"
+        ],
+        [
+          55,
+          61,
+          "ORG"
+        ]
+      ]
+    }
+  ]
+]
