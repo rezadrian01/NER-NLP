@@ -65,24 +65,37 @@ log_section() {
 setup_environment() {
     log_section "STEP 1: Environment Setup"
     
-    # Check if virtual environment exists
-    if [ -d "${VENV_DIR}" ]; then
-        log_info "Virtual environment found at: ${VENV_DIR}"
+    # Check if we're running in Google Colab
+    if [ -n "${COLAB_GPU}" ] || [ -d "/content" ]; then
+        log_info "Google Colab environment detected - skipping virtual environment setup"
+        log "Using system Python environment in Colab..."
+        
+        # Upgrade pip directly
+        log "Upgrading pip..."
+        pip install --upgrade pip --quiet
+        log "✓ pip upgraded"
+        
     else
-        log "Creating new virtual environment..."
-        python3 -m venv "${VENV_DIR}"
-        log "✓ Virtual environment created successfully"
+        # Local environment - use virtual environment
+        # Check if virtual environment exists
+        if [ -d "${VENV_DIR}" ]; then
+            log_info "Virtual environment found at: ${VENV_DIR}"
+        else
+            log "Creating new virtual environment..."
+            python3 -m venv "${VENV_DIR}"
+            log "✓ Virtual environment created successfully"
+        fi
+        
+        # Activate virtual environment
+        log "Activating virtual environment..."
+        source "${VENV_DIR}/bin/activate"
+        log "✓ Virtual environment activated"
+        
+        # Upgrade pip
+        log "Upgrading pip..."
+        pip install --upgrade pip --quiet
+        log "✓ pip upgraded"
     fi
-    
-    # Activate virtual environment
-    log "Activating virtual environment..."
-    source "${VENV_DIR}/bin/activate"
-    log "✓ Virtual environment activated"
-    
-    # Upgrade pip
-    log "Upgrading pip..."
-    pip install --upgrade pip --quiet
-    log "✓ pip upgraded"
     
     # Install dependencies
     log "Installing dependencies from requirements.txt..."
