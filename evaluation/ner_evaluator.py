@@ -25,11 +25,14 @@ logger = logging.getLogger(__name__)
 
 
 class NEREvaluator:
-"""
-Comprehensive NER Model Evaluator
-Author: Kelompok 1
-
-Provides detailed evaluation metrics for Named Entity Recognition models.    def __init__(self, model_name: str):
+    """
+    Comprehensive NER Model Evaluator
+    Author: Kelompok 1
+    
+    Provides detailed evaluation metrics for Named Entity Recognition models.
+    """
+    
+    def __init__(self, model_name: str):
         """
         Initialize evaluator.
         
@@ -44,20 +47,42 @@ Provides detailed evaluation metrics for Named Entity Recognition models.    def
             'confusion_matrix': defaultdict(lambda: defaultdict(int)),
             'examples': []
         }
+        
+        # Label mapping for spaCy multilingual model compatibility
+        self.label_mapping = {
+            'PER': 'PERSON',  # spaCy multilingual uses 'PER', we use 'PERSON'
+            'PERSON': 'PERSON',  # Keep our custom labels as-is
+            'LOC': 'LOC',
+            'ORG': 'ORG', 
+            'EVENT': 'EVENT',
+            'MISC': 'EVENT'  # Map MISC to EVENT as fallback
+        }
+    
+    def normalize_label(self, label: str) -> str:
+        """
+        Normalize entity labels for comparison.
+        
+        Args:
+            label: Original label
+            
+        Returns:
+            Normalized label
+        """
+        return self.label_mapping.get(label, label)
     
     def predict(self, nlp, text: str) -> List[Tuple[int, int, str]]:
         """
-        Get predictions from a spaCy model.
+        Get predictions from a spaCy model with normalized labels.
         
         Args:
             nlp: spaCy model
             text: Input text
             
         Returns:
-            List of (start, end, label) tuples
+            List of (start, end, normalized_label) tuples
         """
         doc = nlp(text)
-        return [(ent.start_char, ent.end_char, ent.label_) for ent in doc.ents]
+        return [(ent.start_char, ent.end_char, self.normalize_label(ent.label_)) for ent in doc.ents]
     
     def calculate_exact_match(self, 
                              true_entities: List[Tuple[int, int, str]], 
@@ -76,8 +101,12 @@ Provides detailed evaluation metrics for Named Entity Recognition models.    def
         true_entities = [tuple(e) if isinstance(e, list) else e for e in true_entities]
         pred_entities = [tuple(e) if isinstance(e, list) else e for e in pred_entities]
         
-        true_set = set(true_entities)
-        pred_set = set(pred_entities)
+        # Normalize labels in both sets
+        true_normalized = [(start, end, self.normalize_label(label)) for start, end, label in true_entities]
+        pred_normalized = [(start, end, self.normalize_label(label)) for start, end, label in pred_entities]
+        
+        true_set = set(true_normalized)
+        pred_set = set(pred_normalized)
         
         tp = len(true_set & pred_set)  # True positives
         fp = len(pred_set - true_set)  # False positives
@@ -111,8 +140,12 @@ Provides detailed evaluation metrics for Named Entity Recognition models.    def
         for i, (pred_start, pred_end, pred_label) in enumerate(pred_entities):
             found_match = False
             for j, (true_start, true_end, true_label) in enumerate(true_entities):
-                # Check if there's overlap and labels match
-                if (pred_label == true_label and 
+                # Normalize labels before comparison
+                normalized_pred_label = self.normalize_label(pred_label)
+                normalized_true_label = self.normalize_label(true_label)
+                
+                # Check if there's overlap and normalized labels match
+                if (normalized_pred_label == normalized_true_label and 
                     not (pred_end <= true_start or pred_start >= true_end)):
                     tp += 1
                     matched_true.add(j)
@@ -201,14 +234,18 @@ Provides detailed evaluation metrics for Named Entity Recognition models.    def
         true_entities = [tuple(e) if isinstance(e, list) else e for e in true_entities]
         pred_entities = [tuple(e) if isinstance(e, list) else e for e in pred_entities]
         
+        # Normalize labels
+        true_normalized = [(start, end, self.normalize_label(label)) for start, end, label in true_entities]
+        pred_normalized = [(start, end, self.normalize_label(label)) for start, end, label in pred_entities]
+        
         label_stats = defaultdict(lambda: {'tp': 0, 'fp': 0, 'fn': 0})
         
-        true_set = set(true_entities)
-        pred_set = set(pred_entities)
+        true_set = set(true_normalized)
+        pred_set = set(pred_normalized)
         
         # True positives and false negatives
         for entity in true_set:
-            label = entity[2]
+            label = entity[2]  # normalized label
             if entity in pred_set:
                 label_stats[label]['tp'] += 1
             else:
@@ -216,7 +253,7 @@ Provides detailed evaluation metrics for Named Entity Recognition models.    def
         
         # False positives
         for entity in pred_set:
-            label = entity[2]
+            label = entity[2]  # normalized label
             if entity not in true_set:
                 label_stats[label]['fp'] += 1
         
@@ -408,6 +445,11 @@ def main():
     """
     Test the evaluator on a sample model.
     """
+    import sys
+    import os
+    
+    # Add parent directory to path to import config
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from config import MODELS_DIR
     
     logger.info("Testing NER Evaluator...")

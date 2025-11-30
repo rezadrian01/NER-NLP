@@ -1,6 +1,6 @@
 """
 Configuration file for Wayang NER and Knowledge Graph Builder
-Author: Ahmad Reza Adrian
+Author: Kelompok 1
 """
 
 import os

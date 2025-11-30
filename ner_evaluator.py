@@ -1,6 +1,6 @@
 """
 NER Model Evaluator
-Author: Ahmad Reza Adrian
+Author: Kelompok 1
 
 This module provides comprehensive evaluation metrics for NER models:
 - Precision, Recall, F1 Score

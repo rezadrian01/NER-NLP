@@ -86,7 +86,7 @@ setup_environment() {
     
     # Install dependencies
     log "Installing dependencies from requirements.txt..."
-    pip install -r "${PROJECT_DIR}/requirements.txt" --quiet
+    pip install -r "${PROJECT_DIR}/requirements.txt"
     log "✓ Dependencies installed"
     
     # Check if spaCy model is installed

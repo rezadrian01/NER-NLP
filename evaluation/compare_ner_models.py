@@ -3,6 +3,7 @@ NER Model Comparison Tool
 Author: Kelompok 1
 
 Compares two NER models side-by-side with comprehensive metrics.
+"""
 
 import spacy
 import json
@@ -10,6 +11,12 @@ from pathlib import Path
 from datetime import datetime
 import logging
 from typing import Dict, Any
+import sys
+import os
+
+# Add parent directory to path to import config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from ner_evaluator import NEREvaluator
 from config import MODELS_DIR, OUTPUT_DIR
 

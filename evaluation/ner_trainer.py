@@ -1,8 +1,10 @@
 """
-Custom NER Model Trainer for Wayang Stories
-Author: Kelompok 1
+Custom NER Model Trainer
+Author: Ahmad Reza Adrian
 
-Train a custom spaCy NER model using manually annotated data.
+This module trains a custom spaCy NER model using annotated data
+from the wayang stories dataset.
+"""
 
 import spacy
 from spacy.training import Example
@@ -12,6 +14,11 @@ import random
 from pathlib import Path
 import logging
 from typing import List, Tuple, Dict
+import sys
+import os
+
+# Add parent directory to path to import config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import MODELS_DIR
 
 # Configure logging
